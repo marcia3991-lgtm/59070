@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>品質管理部大事記</title>
+<title>品管中心大事記</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -344,15 +344,22 @@
 <div class="timeline-wrap" id="timeline"></div>
 
 <footer class="page-footer">
-  <span>奇美醫院 品質管理部</span> · 品質管理部歷年大事記 · 資料彙整製作
+  <span>奇美醫院 品質管理部</span> · 品管中心歷年大事記 · 資料彙整製作
 </footer>
 
 <script>
 
-const eventLinks = {
-  "病人辨識記者會「安全第一 辨識先行」": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/t3/2026/03/07/34740542.jpg&M=1&x=0&y=0&sw=0&sh=0&sl=W&fw=1050&exp=3600&exp=3600",
-  "2025年院內品質提升活動成果發表競賽": "https://sub.chimei.org.tw/59070/index.php/05/5-2/367-2025%E5%B9%B4%E9%99%A2%E5%85%A7%E5%93%81%E8%B3%AA%E6%8F%90%E5%8D%87%E7%AB%B6%E8%B3%BD%E7%8D%B2%E7%8D%8E%E5%9C%98%E9%9A%8A",
+const eventImages = {
+  "病人辨識記者會「安全第一 辨識先行」": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/t3/2026/03/07/34740542.jpg&M=1&x=0&y=0&sw=0&sh=0&sl=W&fw=1050&exp=3600&exp=3600"
 };
+
+// ── 事件連結設定（新增事件時在此加入）─────────────────────────────
+// 格式："事件摘述完整文字": "https://連結網址"
+const eventLinks = {
+  // 範例（請依需求新增或修改）：
+  // "病人辨識記者會「安全第一 辨識先行」": "https://example.com/news/123",
+};
+
 function openModal(text, date) {
   const img = eventImages[text];
   if (!img) return;
@@ -1353,13 +1360,19 @@ function buildTimeline() {
         card.className = `event-card cat-${ev.cat}`;
         card.style.animationDelay = (yi*0.05 + mi*0.03 + ei*0.015) + 's';
         const hasImg = !!eventImages[ev.text];
-        if (hasImg) card.classList.add('has-modal');
-        if (hasImg) card.addEventListener('click', () => openModal(ev.text, ev.date));
+        const hasLink = !!eventLinks[ev.text];
+        if (hasImg || hasLink) card.classList.add('has-modal');
+        if (hasImg && !hasLink) card.addEventListener('click', () => openModal(ev.text, ev.date));
+        if (hasLink) card.addEventListener('click', () => window.open(eventLinks[ev.text], '_blank'));
         card.innerHTML = `
           <div class="event-date"><div class="event-date-text">${p[1]}/${p[2]}</div></div>
           <div class="event-body">
             <div class="event-content">
-              <div class="event-tag">${catLabels[ev.cat]||ev.cat}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;">
+                <div class="event-tag">${catLabels[ev.cat]||ev.cat}</div>
+                ${hasImg ? '<span style="font-size:10px;color:#aaa;">🖼 圖片</span>' : ''}
+                ${hasLink ? '<span style="font-size:10px;color:#4a90c9;">🔗 連結</span>' : ''}
+              </div>
               <div>${ev.text}</div>
             </div>
           </div>`;
