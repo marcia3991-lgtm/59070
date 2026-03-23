@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>品管中心大事記</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --gold: #c9a84c;
+    --deep: #0f3460;
+    --cream: #faf7f0;
+    --border: rgba(201,168,76,0.3);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+  .hero {
+    background: var(--deep);
+    position: relative;
+    overflow: hidden;
+    padding: 72px 40px 56px;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 100%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 90% 100%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(201,168,76,1) 39px, rgba(201,168,76,1) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(201,168,76,1) 39px, rgba(201,168,76,1) 40px);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    padding: 6px 20px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(32px, 5.5vw, 58px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(14px, 2vw, 18px);
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 36px;
+    letter-spacing: 2px;
+    font-weight: 300;
+  }
+  .hero-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto;
+  }
+
+
+  .filter-bar {
+    background: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 12px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 7px 0;
+  }
+  .filter-row + .filter-row {
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .filter-label { font-size: 11px; color: #999; letter-spacing: 1px; margin-right: 4px; font-weight: 500; white-space: nowrap; }
+  .filter-btn {
+    border: 1px solid #ddd;
+    background: transparent;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #555;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { background: var(--deep); border-color: var(--deep); color: #fff; }
+  .year-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  .timeline-wrap { max-width: 960px; margin: 0 auto; padding: 56px 24px 80px; }
+
+  /* Year section divider */
+  .year-section { margin-bottom: 60px; }
+  .year-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .year-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--deep);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .year-label span { color: var(--gold); font-size: 26px; }
+  .year-section-line { flex: 1; height: 2px; background: linear-gradient(90deg, var(--border), transparent); }
+  .year-count { font-size: 12px; color: #bbb; white-space: nowrap; }
+
+  .month-group { margin-bottom: 40px; animation: fadeUp 0.45s ease both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .month-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .month-badge {
+    background: var(--deep);
+    color: #fff;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 26px 6px 16px;
+    letter-spacing: 2px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+    white-space: nowrap;
+  }
+  .month-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+  .month-count { font-size: 11px; color: #ccc; white-space: nowrap; }
+
+  .event-card { display: grid; grid-template-columns: 100px 1fr; margin-bottom: 8px; animation: fadeUp 0.4s ease both; }
+  .event-date { text-align: right; padding: 14px 20px 14px 0; position: relative; }
+  .event-date::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 10px; height: 10px;
+    background: #fff;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .event-date-text { font-family: 'Noto Serif TC', serif; font-size: 12px; color: #999; }
+  .event-body { border-left: 1px solid var(--border); padding: 14px 0 14px 24px; }
+  .event-content {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .event-content:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-left-color: var(--gold); transform: translateX(2px); }
+
+  .cat-award .event-content    { border-left-color: #c9a84c; }
+  .cat-visit .event-content    { border-left-color: #4a90c9; }
+  .cat-training .event-content { border-left-color: #4caf8a; }
+  .cat-cert .event-content     { border-left-color: #9b59b6; }
+  .cat-forum .event-content    { border-left-color: #e67e22; }
+  .cat-internal .event-content { border-left-color: #7f8c8d; }
+
+  .event-tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .cat-award .event-tag    { background: #fef9ec; color: #c9a84c; }
+  .cat-visit .event-tag    { background: #eaf4fb; color: #2980b9; }
+  .cat-training .event-tag { background: #eafaf1; color: #27ae60; }
+  .cat-cert .event-tag     { background: #f5eef8; color: #8e44ad; }
+  .cat-forum .event-tag    { background: #fef5ec; color: #d35400; }
+  .cat-internal .event-tag { background: #f4f6f7; color: #606f7b; }
+
+  .empty-state { text-align: center; padding: 80px 20px; color: #bbb; }
+  .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10,20,40,0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.open { display: flex; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  .modal-box {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 92%;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+    animation: slideUp 0.25s ease;
+    position: relative;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .modal-img {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    background: #eee;
+  }
+  .modal-body { padding: 22px 28px 28px; }
+  .modal-date {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .modal-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    width: 32px; height: 32px;
+    background: rgba(0,0,0,0.45);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    z-index: 2;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.7); }
+  .has-modal { cursor: pointer; }
+  .has-modal .event-content { border-left-color: var(--gold) !important; }
+
+  .page-footer {
+    background: var(--deep);
+    color: rgba(255,255,255,0.35);
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 32px;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+  .page-footer span { color: var(--gold); }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 56px 16px 44px; }
+    .filter-bar { padding: 10px 12px; }
+    .timeline-wrap { padding: 36px 10px 60px; }
+    .event-card { grid-template-columns: 68px 1fr; }
+    .hero-stats { gap: 24px; }
+    .stat-num { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">品質管理部 · 年度紀實</div>
+    <h1>品質管理部 <span>大事記</span></h1>
+    <div class="hero-sub">奇美醫院 品質管理部 歷年重要事件彙整</div>
+
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-row">
+    <span class="filter-label">類別篩選</span>
+    <button class="filter-btn active" onclick="filterCat('all',this)">全部</button>
+    <button class="filter-btn" onclick="filterCat('award',this)">🏆 獲獎榮耀</button>
+    <button class="filter-btn" onclick="filterCat('cert',this)">📋 認證稽核</button>
+    <button class="filter-btn" onclick="filterCat('training',this)">📚 教育訓練</button>
+    <button class="filter-btn" onclick="filterCat('visit',this)">🏥 參訪交流</button>
+    <button class="filter-btn" onclick="filterCat('forum',this)">💬 研討會議</button>
+    <button class="filter-btn" onclick="filterCat('internal',this)">🏢 院內活動</button>
+  </div>
+  <div class="filter-row" id="yearRow">
+    <span class="filter-label">年份篩選</span>
+    <button class="filter-btn year-btn active" onclick="filterYear('all',this)">全部年份</button>
+    <button class="filter-btn year-btn" onclick="filterYear('115',this)">115年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('114',this)">114年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('113',this)">113年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('112',this)">112年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('111',this)">111年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('110',this)">110年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('109',this)">109年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('108',this)">108年</button>
+    <button class="filter-btn year-btn" onclick="filterYear('107',this)">107年</button>
+  </div>
+</div>
+
+<div class="timeline-wrap" id="timeline"></div>
+
+<footer class="page-footer">
+  <span>奇美醫院 品質管理部</span> · 品管中心歷年大事記 · 資料彙整製作
+</footer>
+
+<script>
+
+const eventImages = {
+  "病人辨識記者會「安全第一 辨識先行」": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/t3/2026/03/07/34740542.jpg&M=1&x=0&y=0&sw=0&sh=0&sl=W&fw=1050&exp=3600&exp=3600"
+};
+
+const eventImages = {
+  "頭頸癌疾病照護品質預評作業（委員：蔡森田教授）": "https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/t3/2026/03/07/34740542.jpg&M=1&x=0&y=0&sw=0&sh=0&sl=W&fw=1050&exp=3600&exp=3600"
+};
+function openModal(text, date) {
+  const img = eventImages[text];
+  if (!img) return;
+  document.getElementById('modalImg').src = img;
+  document.getElementById('modalTitle').textContent = text;
+  document.getElementById('modalDate').textContent = date;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModalBtn(); });
+
+const catLabels = { all:"全部", award:"獲獎榮耀", cert:"認證稽核", training:"教育訓練", visit:"參訪交流", forum:"研討會議", internal:"院內活動" };
+const monthNames = { "01":"一月","02":"二月","03":"三月","04":"四月","05":"五月","06":"六月","07":"七月","08":"八月","09":"九月","10":"十月","11":"十一月","12":"十二月" };
+const years = ["115","114","113","112","111","110","109","108","107"];
+let currentCat = "all";
+let currentYear = "all";
+
+const allData = {
+"115":[
+  {date:"115/03/12",text:"廖顧問－院外品質競賽團隊輔導",cat:"training"},
+  {date:"115/03/05",text:"病人辨識記者會「安全第一 辨識先行」",cat:"forum"},
+  {date:"115/03/05",text:"廖顧問－QCC 進度輔導",cat:"training"},
+  {date:"115/03/03",text:"陳顧問－QCC 進度輔導暨院外競賽團隊輔導",cat:"training"},
+  {date:"115/02/26",text:"2026年品質提升活動運作說明會暨品管輔導員交流共識會",cat:"internal"},
+  {date:"115/02/11",text:"2025年院內品質提升活動成果發表競賽",cat:"internal"},
+  {date:"115/02/10",text:"疾病照護團隊交流會",cat:"forum"},
+  {date:"115/02/09",text:"頭頸癌疾病照護品質預評作業（委員：蔡森田教授）",cat:"cert"},
+  {date:"115/02/05",text:"三院區行政主管旺年會",cat:"internal"},
+  {date:"115/02/04",text:"NHQA 及 NCMEA 頒獎典禮",cat:"award"},
+],
+"114":[
+  {date:"114/12/18",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/12/17",text:"辦理 IIC 期末交流暨教育訓練（Power BI 運用）",cat:"training"},
+  {date:"114/12/16",text:"2025年提升正向病安文化分享會",cat:"forum"},
+  {date:"114/12/12",text:"高醫岡山分院至本院參訪",cat:"visit"},
+  {date:"114/12/11",text:"醫策會品質認證授證典禮：慢性阻塞性肺病照護、糖尿病照護",cat:"cert"},
+  {date:"114/12/11",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"114/12/05",text:"醫策會至本院辦理「風險概念推廣課程暨優良響應機構分享會」",cat:"forum"},
+  {date:"114/12/03",text:"乳癌照護疾病認證實地訪視",cat:"cert"},
+  {date:"114/11/28",text:"2025年先鋒之全國金獎品管圈發表大會，受益圈榮獲「金獎」及「金鑽獎」",cat:"award"},
+  {date:"114/11/25",text:"杜漢祥部長榮獲衛生福利部疾病管制署「114年度防疫績優非公務類個人獎」，受邀至疾病管制署領獎",cat:"award"},
+  {date:"114/11/21",text:"參加臺灣醫療品質學會 RCA 競賽活動",cat:"forum"},
+  {date:"114/11/16",text:"於奇美博物館辦理「深耕臺南 健康台灣 國際研討會暨工作坊暨願景實踐營」",cat:"forum"},
+  {date:"114/11/14",text:"2025年中衛發展中心台灣持續改善競賽決賽頒獎典禮暨國際研討會，至善組急品圈安老組及藥帶圈榮獲「金塔5星獎」，救生圈及 ICG 圈榮獲「銀塔5星獎」",cat:"award"},
+  {date:"114/11/12",text:"醫策會「醫療事故關懷服務標竿獎勵計畫」標竿分享會，病安暨醫品委員會副主委陳志金主任前往分享",cat:"forum"},
+  {date:"114/11/10",text:"114年醫策會疾病照護品質認證標竿分享會",cat:"cert"},
+  {date:"114/11/07",text:"台灣健康照護聯合學術研討會，共錄取4篇口頭論文、9篇海報論文，其中1篇「口頭發表金獎」、1篇「海報發表金獎」、3篇「研究創新獎」",cat:"award"},
+  {date:"114/10/29",text:"關懷群組機構期末交流暨成果分享會",cat:"forum"},
+  {date:"114/10/17",text:"廖顧問－PROM 教育訓練",cat:"training"},
+  {date:"114/10/16",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/10/15",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"114/10/14",text:"台灣醫務管理學會台灣健康照護品質管理競賽暨 THIS 年會，本院榮獲2銅獎（救腦圈、綠巨人圈）、4佳作、2最佳創新主題獎、1潛力獎（救生圈、急品圈安老組、強心圈）",cat:"award"},
+  {date:"114/10/08",text:"病安週院外響應活動－托嬰中心",cat:"internal"},
+  {date:"114/10/07",text:"病安週院外響應活動－幼兒園",cat:"internal"},
+  {date:"114/10/01",text:"114年特色醫療競賽",cat:"award"},
+  {date:"114/09/30",text:"114年院內醫病共享決策（SDM）成果發表會",cat:"internal"},
+  {date:"114/09/25",text:"病安週院內響應活動",cat:"internal"},
+  {date:"114/09/19",text:"114年衛生局急重症醫療品質認證",cat:"cert"},
+  {date:"114/09/17",text:"麻醉照護病安列車",cat:"training"},
+  {date:"114/08/20",text:"台南市衛生局督考",cat:"cert"},
+  {date:"114/08/14",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"114/08/05",text:"全院演講－將品管圈成果轉換論文發表（黃建程主任）",cat:"training"},
+  {date:"114/08/01",text:"品質管理中心通過升格為品質管理部，並於品質管理部下設醫療品質科、醫療安全科、認證稽核科",cat:"internal"},
+  {date:"114/07/31",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/07/30",text:"品管中心與公共事務室共同主辦「醫療爭議調解程序與實務工作坊」",cat:"forum"},
+  {date:"114/07/30",text:"IIC 計畫醫策會到院輔導，以順利推動計畫執行，協助釐清推動方向",cat:"internal"},
+  {date:"114/07/28",text:"114年專科座談－骨科、神外、移植、小兒外",cat:"internal"},
+  {date:"114/07/25",text:"114年專科座談－牙醫、復健、家醫",cat:"internal"},
+  {date:"114/07/24",text:"廖顧問－PDCA 課程",cat:"training"},
+  {date:"114/07/24",text:"114年專科座談－眼科、耳鼻喉、皮膚、營養",cat:"internal"},
+  {date:"114/07/22",text:"疾病照護團隊期中交流會",cat:"forum"},
+  {date:"114/07/22",text:"114年專科座談－癌症、細胞治療、乳醫、高壓氧",cat:"internal"},
+  {date:"114/07/21",text:"114年專科座談－門診、檢查室、健管中心",cat:"internal"},
+  {date:"114/07/18",text:"114年專科座談－心內、胃腸、神內、中風中心",cat:"internal"},
+  {date:"114/07/17",text:"114年專科座談－護理部",cat:"internal"},
+  {date:"114/07/17",text:"品質提升活動期中發表會暨效果維持",cat:"internal"},
+  {date:"114/07/14",text:"114年專科座談－婦產、腦創傷、傷口照護",cat:"internal"},
+  {date:"114/07/11",text:"114年專科座談－醫研、臨床病理、精準醫學、藥劑",cat:"internal"},
+  {date:"114/07/09",text:"台中慈濟醫院參訪，交流 AI 在提升醫療品質與病人安全的創新運用",cat:"visit"},
+  {date:"114/07/08",text:"114年專科座談－麻醉部",cat:"internal"},
+  {date:"114/07/04",text:"TCPI 從品質改善到投稿技巧的全方位實戰工作坊",cat:"training"},
+  {date:"114/06/30",text:"114年專科座談－精神、中醫、加護、呼吸治療",cat:"internal"},
+  {date:"114/06/27",text:"114年專科座談－放射、核醫、兒科、放腫",cat:"internal"},
+  {date:"114/06/25",text:"醫品病安標竿研討會",cat:"forum"},
+  {date:"114/06/24",text:"114年專科座談－急診、整合醫療、職醫、病理部",cat:"internal"},
+  {date:"114/06/23",text:"114年專科座談－泌尿、心外、整外、手術中心",cat:"internal"},
+  {date:"114/06/20",text:"先鋒全國品管圈大會",cat:"award"},
+  {date:"114/06/13",text:"中衛南區發表暨頒獎典禮",cat:"award"},
+  {date:"114/06/12",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/06/10",text:"聖馬爾定醫院至本院參訪",cat:"visit"},
+  {date:"114/04/30",text:"南區醫療網醫預法教育訓練",cat:"training"},
+  {date:"114/04/29",text:"SDM PDA 輔導會議（美娟藥師）",cat:"internal"},
+  {date:"114/04/24",text:"資通安全稽核（品中、整合、癌症、遺傳）",cat:"cert"},
+  {date:"114/04/24",text:"病房主任會議",cat:"internal"},
+  {date:"114/04/23",text:"ISO 7101 稽核員課程（第3次）",cat:"training"},
+  {date:"114/04/22",text:"院外品質競賽團隊輔導",cat:"training"},
+  {date:"114/04/21",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"114/04/19",text:"臺灣醫療品質協會與本院合辦「智能科技大解密：智慧醫療品質管理實務與醫療論文發表成功之道」課程，聚焦生成式 AI 於醫療品質與論文發表的實務應用",cat:"forum"},
+  {date:"114/04/18",text:"ISO 7101 稽核員課程（第2次）",cat:"training"},
+  {date:"114/04/17",text:"嘉義基督教醫院至本院參訪（AI 運用）",cat:"visit"},
+  {date:"114/04/17",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/04/16",text:"病人安全事件調查與分析工作坊",cat:"training"},
+  {date:"114/04/09",text:"ISO 7101 稽核員課程（第1次）",cat:"training"},
+  {date:"114/04/09",text:"113年病人安全週與醫病共享決策實踐運動榮獲「病人安全週-優良獎」、「SDM-臨床運用組-優秀團隊獎」（4組）、「SDM-臨床運用組-人因特別獎」",cat:"award"},
+  {date:"114/04/02",text:"根本原因分析 RCA 工作坊",cat:"training"},
+  {date:"114/04/01",text:"國泰醫院至本院參訪（AI 運用）",cat:"visit"},
+  {date:"114/03/21",text:"品管輔導員交流共識會",cat:"internal"},
+  {date:"114/03/19",text:"醫策會 TCPI 臨床成效指標發表會",cat:"forum"},
+  {date:"114/03/14",text:"ISO 7101 醫療機構管理系統認證起始會議",cat:"cert"},
+  {date:"114/03/10",text:"貝里斯人員至品管中心學習交流",cat:"visit"},
+  {date:"114/03/08",text:"Power Platform 實作工作坊",cat:"training"},
+  {date:"114/03/06",text:"廖顧問－品質提升輔導",cat:"training"},
+  {date:"114/03/05",text:"本院兒科團隊及品管中心杜漢祥主任、周淑蓮副主任至彰化基督教醫院參訪兒科照護",cat:"visit"},
+  {date:"114/03/05",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"114/02/27",text:"院外競賽輔導－藥帶圈",cat:"training"},
+  {date:"114/02/26",text:"醫療事故關懷標竿獎勵計畫－合作機構交流會",cat:"forum"},
+  {date:"114/02/25",text:"品管通識課程－多元品管手法及工具簡介",cat:"training"},
+  {date:"114/02/19",text:"南台科大至本院參訪（AI 運用）",cat:"visit"},
+  {date:"114/02/13",text:"品質管理中心春酒",cat:"internal"},
+  {date:"114/02/12",text:"品質提升活動說明會",cat:"internal"},
+  {date:"114/02/08",text:"醫品病安願景探索營",cat:"internal"},
+  {date:"114/01/24",text:"SDM PDA 輔導會議－放腫科（美娟藥師）",cat:"internal"},
+  {date:"114/01/23",text:"三院區行政主管旺年會",cat:"internal"},
+  {date:"114/01/22",text:"2024年品質提升活動期末成果發表競賽",cat:"internal"},
+  {date:"114/01/20",text:"SDM PDA 輔導會議－8B（美娟藥師）",cat:"internal"},
+  {date:"114/01/16",text:"SNQ 授證典禮",cat:"cert"},
+  {date:"114/01/15",text:"醫策會 NHQA 頒獎典禮",cat:"award"},
+],
+"113":[
+  {date:"113/12/30",text:"113年專科座談－精神、中醫、RT、乳醫",cat:"internal"},
+  {date:"113/12/27",text:"Power BI 成果發表會",cat:"internal"},
+  {date:"113/12/26",text:"品質管理中心稽核精神醫學部 ISO 標準文件",cat:"cert"},
+  {date:"113/12/24",text:"品質管理中心與臨床試驗中心內部互稽",cat:"cert"},
+  {date:"113/12/24",text:"童綜合醫院至本院參訪品質管理中心",cat:"visit"},
+  {date:"113/12/23",text:"SDM PDA 輔導會議－8B病房（李美娟藥師）",cat:"internal"},
+  {date:"113/12/18",text:"第二梯次溝通關懷培訓工作坊",cat:"training"},
+  {date:"113/12/17",text:"2024年疾病照護團隊交流分享會",cat:"forum"},
+  {date:"113/12/13",text:"醫品協會決賽發表會暨頒獎典禮，榮獲銀品獎（足穩圈）、銅品獎（救腦圈）、優品獎（綠巨人圈、醫e圈、是8Life圈）、優良海報獎（急品圈安老組）",cat:"award"},
+  {date:"113/12/13",text:"DM 疾病認證醫策會實地訪視（糖尿病）",cat:"cert"},
+  {date:"113/12/13",text:"2024年醫策會提升正向病安文化分享會，本院口頭發表榮獲1「特優獎」、2「優秀案例獎」，海報發表榮獲1「特優獎」、1「優等獎」、「海報人氣獎」以及「投稿錄取最多」獲頒感謝狀",cat:"award"},
+  {date:"113/12/12",text:"113年專科座談－癌症、細胞、傷口、高壓氧",cat:"internal"},
+  {date:"113/12/11",text:"SDM PDA 輔導會議－放腫科（美娟藥師）",cat:"internal"},
+  {date:"113/12/11",text:"醫策會－認識品管指標與臨床實務運用",cat:"forum"},
+  {date:"113/12/09",text:"標準文件內部稽核訓練課程",cat:"cert"},
+  {date:"113/12/06",text:"第一梯次溝通關懷培訓工作坊",cat:"training"},
+  {date:"113/12/06",text:"113年專科座談－放腫、電腦刀、營養、檢查室",cat:"internal"},
+  {date:"113/12/06",text:"張顧問－品質提升輔導",cat:"training"},
+  {date:"113/12/05",text:"傷口照護中心 ISO 標準文件稽核",cat:"cert"},
+  {date:"113/12/05",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"113/12/04",text:"113年院內醫病共享決策（SDM）成果發表會",cat:"internal"},
+  {date:"113/11/26",text:"113年專科座談－婦產、加護醫學、臨床病理、精準醫學",cat:"internal"},
+  {date:"113/11/23",text:"台灣醫療品質協會－精實醫療於醫療界運用工作坊",cat:"forum"},
+  {date:"113/11/22",text:"113年中衛發展中心台灣持續改善競賽團結組頒獎典禮，急品圈安老組榮獲「金塔3星獎」、救腦圈榮獲「銀塔3星獎」",cat:"award"},
+  {date:"113/11/21",text:"113年度病安目標執行策略特色醫院觀摩會",cat:"forum"},
+  {date:"113/11/21",text:"田宇峯首席醫療副院長榮獲衛福部113年醫療事故關懷服務績優表揚「卓越領導獎」、蔡麗淑組長榮獲「關懷典範獎」",cat:"award"},
+  {date:"113/11/20",text:"113年專科座談－門診、健康管理中心、復健部、兒科",cat:"internal"},
+  {date:"113/11/19",text:"SDM PDA 輔導會議－精神科（美娟藥師）",cat:"internal"},
+  {date:"113/11/19",text:"中衛競賽決賽發表會（救腦圈、急品圈安老組）",cat:"forum"},
+  {date:"113/11/15",text:"113年專科座談－牙醫、放射、核子醫學、病理",cat:"internal"},
+  {date:"113/11/01",text:"陳欽明主任卸任品質管理中心主任職務，由杜漢祥副主任接任主任一職",cat:"internal"},
+  {date:"113/10/25",text:"張顧問－品質提升輔導",cat:"training"},
+  {date:"113/10/24",text:"113年專科座談－眼科、ENT、皮膚科、職業醫學科",cat:"internal"},
+  {date:"113/10/23",text:"113年專科座談－腎臟科、感染科、神經內科、中風中心",cat:"internal"},
+  {date:"113/10/23",text:"陳顧問－品質提升輔導",cat:"training"},
+  {date:"113/10/22",text:"專科座談－急診、家醫部、整合醫學中心、緩和醫療科",cat:"internal"},
+  {date:"113/10/19",text:"創意設計思考工作坊",cat:"training"},
+  {date:"113/10/18",text:"COPD 疾病認證醫策會實地訪查",cat:"cert"},
+  {date:"113/10/17",text:"113年專科座談－護理部",cat:"internal"},
+  {date:"113/10/17",text:"113年專科座談－一般外科、大腸直腸外科、外傷科、移植醫學科",cat:"internal"},
+  {date:"113/10/14",text:"杜漢祥副主任及婦產科徐英倫醫師受邀至南天地方新聞台錄影，分享「要人也要神！醫學結合宗教宣導孕產安全」議題",cat:"forum"},
+  {date:"113/10/14",text:"113年專科座談－骨科、心臟血管外科、胸腔外科、小兒外科",cat:"internal"},
+  {date:"113/10/11",text:"113年專科座談－教學中心、師培、醫研部、腦創傷中心",cat:"internal"},
+  {date:"113/10/07",text:"113年專科座談－麻醉部",cat:"internal"},
+  {date:"113/10/05",text:"病安週院外響應活動－臨水夫人媽廟",cat:"internal"},
+  {date:"113/09/30",text:"113年專科座談－心臟血管內科、風濕免疫科、血液腫瘤科、一般內科",cat:"internal"},
+  {date:"113/09/25",text:"兒科照護病安列車",cat:"internal"},
+  {date:"113/09/25",text:"病安週院內響應活動－2樓空橋",cat:"internal"},
+  {date:"113/09/24",text:"SDM PDA 輔導－精神科（李美娟藥師）",cat:"internal"},
+  {date:"113/09/21",text:"113年台灣醫務管理學會台灣健康照護品質管理競賽，急品圈安老組、ICG圈獲得「佳作、最佳創新主題獎」、好孕圈、7A病房獲得「入選」",cat:"award"},
+  {date:"113/09/20",text:"113年專科座談－泌尿外科、神經外科、整型外科、藥劑部",cat:"internal"},
+  {date:"113/09/16",text:"113年專科座談－胃腸肝膽科、胸腔內科、內分泌新陳代謝科、全人醫療科",cat:"internal"},
+  {date:"113/09/03",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/08/16",text:"品質提升活動期中發表會",cat:"internal"},
+  {date:"113/08/15",text:"SDM PDA 輔導會議－牙科（李美娟藥師）",cat:"internal"},
+  {date:"113/08/01",text:"SDM PDA 輔導會議－胃腸科（李美娟藥師）",cat:"internal"},
+  {date:"113/07/19",text:"112年病人安全週與醫病共享決策實踐運動榮獲「112年病人安全週-創意獎」、「112年醫病共享決策實踐運動臨床運用組-優秀團隊獎（共5個）、創意獎、人因特別獎」",cat:"award"},
+  {date:"113/06/26",text:"SDM PDA 輔導會議－牙科（李美娟藥師）",cat:"internal"},
+  {date:"113/06/20",text:"張顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/06/20",text:"中衛競賽南區頒獎典禮",cat:"award"},
+  {date:"113/06/05",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/05/23",text:"SDM PDA 輔導會議－牙科（李美娟藥師）",cat:"internal"},
+  {date:"113/05/08",text:"醫策會 NHQA 競賽說明會（視訊）",cat:"forum"},
+  {date:"113/04/29",text:"台灣醫品協會－評鑑課程經驗分享",cat:"forum"},
+  {date:"113/04/25",text:"張顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/04/24",text:"不相毗鄰院區合併評鑑實地訪查",cat:"cert"},
+  {date:"113/04/22",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/04/18",text:"張顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/04/15",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/03/27",text:"SDM PDA 輔導會議－牙科（李美娟藥師）",cat:"internal"},
+  {date:"113/03/27",text:"張顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/03/25",text:"品質提升活動基礎課程",cat:"training"},
+  {date:"113/03/20",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/03/18",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"113/03/15",text:"醫策會 TCPI 臨床成效指標發表會",cat:"forum"},
+  {date:"113/02/26",text:"2023年醫策會 NHQA 頒獎典禮，傑出醫療類：急診醫學部榮獲「鑽石獎」、奇美友愛 HIV 照護團隊榮獲「金獎」、心臟衰竭照護團隊榮獲「優選」；系統類：加護醫學部榮獲「卓越中心」；智慧醫療類：門急診服務領域二個「標章」；主題類：菁英組榮獲「銀獎」、「創意獎」及「人因特別獎」",cat:"award"},
+  {date:"113/02/23",text:"醫療品質協會競賽標竿分享課程",cat:"forum"},
+  {date:"113/02/22",text:"2024年品質提升活動運作說明會",cat:"internal"},
+  {date:"113/02/01",text:"2023年品質提升活動期末成果發表競賽",cat:"internal"},
+  {date:"113/01/30",text:"2023年 SNQ 國家品質標章暨國家生技醫療品質獎頒獎典禮，本院護理部4A加護病房榮獲「國家生技醫療品質獎銅獎」；另有八組新案及十組續審獲「國家品質標章」",cat:"award"},
+  {date:"113/01/24",text:"中醫部病安列車",cat:"internal"},
+  {date:"113/01/12",text:"SDM PDA 輔導－硬化症－神內（李美娟藥師）",cat:"internal"},
+],
+"112":[
+  {date:"112/12/28",text:"SDM PDA 輔導－戒菸（家醫/胸內）（蔡長志主任）",cat:"internal"},
+  {date:"112/12/27",text:"腎臟病照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/12/21",text:"NHQA 傑出醫療類實地審查－急診醫學部",cat:"award"},
+  {date:"112/12/20",text:"112醫療事故關懷服務績優表揚頒獎典禮，本院品質管理中心陳志金副主任及整合醫療中心蔡雅雯專員榮獲績優個人獎",cat:"award"},
+  {date:"112/12/19",text:"SNQ 國家品質標章授證典禮",cat:"award"},
+  {date:"112/12/15",text:"臺灣醫療品質協會競賽，救生圈榮獲進階組菁英創新獎、菁英金品獎；ICG圈榮獲銅品獎；急品圈安老組、互扶圈、好孕圈榮獲優品獎；精化圈榮獲海報發表獎；7A病房RCA榮獲優良海報獎",cat:"award"},
+  {date:"112/12/13",text:"醫策會2023提升正向病安文化分享會，本院錄取2篇口頭發表、1篇海報發表",cat:"forum"},
+  {date:"112/12/12",text:"張顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/12/08",text:"關節置換照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/12/07",text:"陳顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/11/29",text:"112年院內醫病共享決策（SDM）成果發表",cat:"internal"},
+  {date:"112/11/20",text:"SNQ 實地審查－暖心護兒",cat:"cert"},
+  {date:"112/11/17",text:"中衛發展中心2023年台灣持續改善競賽（TCIA）現場發表：救生圈榮獲銀塔獎、急品圈安老組榮獲銅塔獎",cat:"award"},
+  {date:"112/11/14",text:"陳欽明主任受邀至秀傳體系「2023品安職人成長營」演講，主題：品質深耕 醫療提升",cat:"forum"},
+  {date:"112/11/10",text:"台灣健康照護聯合學術研討會，共錄取1篇口頭論文，16篇海報論文",cat:"forum"},
+  {date:"112/11/08",text:"醫策會 NHQA 現場發表（急品圈）",cat:"award"},
+  {date:"112/11/07",text:"醫策會 NHQA 現場發表（救生圈）",cat:"award"},
+  {date:"112/11/03",text:"冠狀動脈照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/11/02",text:"醫策會 NHQA 現場發表（互扶圈）",cat:"award"},
+  {date:"112/10/27",text:"112年特色醫療成果發表會",cat:"internal"},
+  {date:"112/10/26",text:"臺灣醫療品質協會於本院國際會議廳主辦病人安全目標實務研討會",cat:"forum"},
+  {date:"112/10/23",text:"人事：定契人員鄭宇光先生到任",cat:"internal"},
+  {date:"112/10/18",text:"牙醫部病安列車",cat:"internal"},
+  {date:"112/10/14",text:"台灣醫務管理學會台灣健康照護品質管理競賽，本院榮獲5佳作（好孕圈、強心圈、CEOs圈、寶貝呼呼圈、ICG圈）",cat:"award"},
+  {date:"112/10/13",text:"Power BI 模組成果發表會",cat:"internal"},
+  {date:"112/10/06",text:"張國昌顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/10/05",text:"陳建宇顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/10/02",text:"NHQA 卓越中心實地審查（加護醫學部）",cat:"award"},
+  {date:"112/09/26",text:"SDM PDA 輔導－ICU（李美娟藥師）",cat:"internal"},
+  {date:"112/09/15",text:"Power BI 工作坊－案例輔導",cat:"training"},
+  {date:"112/09/12",text:"NHQA 實地審查－急品圈安老組",cat:"award"},
+  {date:"112/09/11",text:"NHQA 實地審查－救生圈",cat:"award"},
+  {date:"112/09/07",text:"心衰竭照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/09/06",text:"張國昌顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/08/24",text:"台灣健康照護品質管理競賽決賽發表會",cat:"award"},
+  {date:"112/08/23",text:"SDM 實踐第三階段輔導會議",cat:"internal"},
+  {date:"112/08/23",text:"NHQA 面談－互扶圈",cat:"award"},
+  {date:"112/08/22",text:"112年專科座談－家庭醫學部、職業醫學科、健康管理中心",cat:"internal"},
+  {date:"112/08/18",text:"創傷性腦損傷照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/08/16",text:"112年專科座談－牙科部、影像醫學部、核子醫學科",cat:"internal"},
+  {date:"112/08/11",text:"112年專科座談－門診部、檢查室",cat:"internal"},
+  {date:"112/08/09",text:"SDM PDA 輔導－泌尿外科、神經內科、ICU、牙科部",cat:"internal"},
+  {date:"112/08/09",text:"SDM & Choosing Wisely 全院演講",cat:"training"},
+  {date:"112/08/07",text:"112年專科座談－緩和醫療中心、呼吸治療科、病理部",cat:"internal"},
+  {date:"112/08/05",text:"指標管理與 Power BI 應用工作坊",cat:"training"},
+  {date:"112/08/04",text:"中衛競賽實地審查－救生圈、急品圈",cat:"cert"},
+  {date:"112/08/03",text:"112年專科座談－精神醫學部、營養科、高壓氧科",cat:"internal"},
+  {date:"112/07/25",text:"112年專科座談－中醫部、腦創傷中心、傷口照護中心",cat:"internal"},
+  {date:"112/07/24",text:"腦中風照護疾病認證實地訪查",cat:"cert"},
+  {date:"112/07/19",text:"112年專科座談－急診醫學部、癌症中心、細胞治療中心",cat:"internal"},
+  {date:"112/07/17",text:"陳建宇顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/07/13",text:"2023年 RCA 病安事件調查培訓工作坊（下）",cat:"training"},
+  {date:"112/07/13",text:"112年專科座談－教學中心、教師培育中心、醫學研究部",cat:"internal"},
+  {date:"112/07/12",text:"SDM PDA 輔導－牙科部＋精神醫學部（李美娟藥師）",cat:"internal"},
+  {date:"112/07/06",text:"112年專科座談－眼科部、臨床病理部、精準醫學中心",cat:"internal"},
+  {date:"112/07/05",text:"2023年品質提升活動期中發表暨2022效果維持審查報告",cat:"internal"},
+  {date:"112/07/04",text:"112年專科座談－放射腫瘤部、電腦刀中心、乳房醫學中心",cat:"internal"},
+  {date:"112/06/29",text:"2023年 RCA 病安事件調查培訓工作坊（中）",cat:"training"},
+  {date:"112/06/29",text:"SDM PDA 輔導－家庭醫學部（蔡長志主任）",cat:"internal"},
+  {date:"112/06/29",text:"112年專科座談－耳鼻喉部、兒科部、皮膚科",cat:"internal"},
+  {date:"112/06/28",text:"SDM PDA 輔導－牙醫部＋放射腫瘤部（李美娟藥師）",cat:"internal"},
+  {date:"112/06/27",text:"SDM 課程－臨床實施概述（李穎俐督導）",cat:"training"},
+  {date:"112/06/27",text:"112年專科座談－胸腔外科、心臟血管外科、小兒外科",cat:"internal"},
+  {date:"112/06/20",text:"SDM PDA 輔導－精神醫學部（李美娟藥師）",cat:"internal"},
+  {date:"112/06/16",text:"112年專科座談－整形外科、婦產部、復健部",cat:"internal"},
+  {date:"112/06/15",text:"112年專科座談－護理部",cat:"internal"},
+  {date:"112/06/15",text:"2023年 RCA 病安事件調查培訓工作坊（上）",cat:"training"},
+  {date:"112/06/08",text:"112年專科座談－胃腸肝膽科、神經內科、腦中風中心",cat:"internal"},
+  {date:"112/06/07",text:"SDM PDA 輔導－牙醫部＋泌尿外科（李美娟藥師）",cat:"internal"},
+  {date:"112/06/06",text:"張國昌顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/06/05",text:"陳建宇顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/05/31",text:"SDM 課程－輔助工具的製作、網路資源及院內平台介紹（李美娟藥師）",cat:"training"},
+  {date:"112/05/30",text:"112年專科座談－神經外科、泌尿外科、外傷科",cat:"internal"},
+  {date:"112/05/24",text:"112年專科座談－血液腫瘤科、全人醫療科、老年醫學科、整合醫療中心、風濕免疫科",cat:"internal"},
+  {date:"112/05/24",text:"病安列車「檢查室」",cat:"internal"},
+  {date:"112/05/23",text:"醫策會 Power BI 工作坊",cat:"training"},
+  {date:"112/05/23",text:"112年專科座談－一般及消化系外科、大腸直腸外科、移植醫學科",cat:"internal"},
+  {date:"112/05/19",text:"112年專科座談－感染科、胸腔內科、一般內科",cat:"internal"},
+  {date:"112/05/17",text:"112年專科座談－骨科部、加護醫學部、藥劑部",cat:"internal"},
+  {date:"112/05/13",text:"中衛品質改善案例研討會",cat:"forum"},
+  {date:"112/05/12",text:"醫策會 NHQA 主題類/實證類標竿分享（視訊）",cat:"forum"},
+  {date:"112/05/11",text:"112年專科座談－心臟血管內科、內分泌新陳代謝科、腎臟科",cat:"internal"},
+  {date:"112/05/09",text:"病安列車「藥劑部」",cat:"internal"},
+  {date:"112/05/09",text:"112年專科座談－麻醉部",cat:"internal"},
+  {date:"112/05/05",text:"SDM PDA 輔導－牙科齒槽（李美娟藥師）",cat:"internal"},
+  {date:"112/05/04",text:"醫策會 TCPI 指標說明會（線上）",cat:"forum"},
+  {date:"112/05/04",text:"SDM PDA 輔導－中醫（蔡長志主任）",cat:"internal"},
+  {date:"112/05/04",text:"SDM PDA 輔導－精神科（李美娟藥師）",cat:"internal"},
+  {date:"112/05/03",text:"SDM PDA 輔導－放腫（李美娟藥師）",cat:"internal"},
+  {date:"112/04/27",text:"醫策會醫院評鑑說明會",cat:"forum"},
+  {date:"112/04/26",text:"張國昌顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/04/26",text:"SDM PDA 輔導－家醫（蔡長志主任）",cat:"internal"},
+  {date:"112/04/26",text:"醫策會 NHQA 競賽說明會",cat:"forum"},
+  {date:"112/04/26",text:"SDM 課程－概念與臨床實務導入（陳志金主任）",cat:"training"},
+  {date:"112/04/25",text:"張國昌顧問－2022年院外品質競賽輔導",cat:"training"},
+  {date:"112/04/25",text:"陳建宇顧問－2023年院外品質競賽輔導",cat:"training"},
+  {date:"112/04/25",text:"體系導入 Microsoft Office 365 介紹說明會",cat:"training"},
+  {date:"112/04/24",text:"陳建宇顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/04/20",text:"醫策會－112年醫院病人安全年度目標推廣課程（視訊）",cat:"forum"},
+  {date:"112/04/17",text:"「和平歸來」影片特映會",cat:"internal"},
+  {date:"112/04/13",text:"SDM PDA 輔導－中醫針灸方式（蔡長志主任）",cat:"internal"},
+  {date:"112/03/27",text:"陳欽明主任擔任部立台南醫院品質發表競賽評審",cat:"forum"},
+  {date:"112/03/24",text:"醫品協會2022競賽標竿分享會",cat:"forum"},
+  {date:"112/03/20",text:"張國昌顧問－品質提升活動課程",cat:"training"},
+  {date:"112/03/16",text:"陳建宇顧問－品質提升活動課程",cat:"training"},
+  {date:"112/03/15",text:"陳建宇顧問－2023年院外品質競賽輔導",cat:"training"},
+  {date:"112/03/13",text:"張國昌顧問－2022年院外品質競賽輔導",cat:"training"},
+  {date:"112/03/09",text:"陳建宇顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/03/03",text:"醫策會 TCPI 臨床成效指標發表會",cat:"forum"},
+  {date:"112/03/02",text:"張國昌顧問－品質提升活動輔導",cat:"training"},
+  {date:"112/02/24",text:"陳建宇顧問－品質提升活動課程",cat:"training"},
+  {date:"112/02/22",text:"復健部病安列車活動",cat:"internal"},
+  {date:"112/02/21",text:"111年病人安全週與醫病共享決策實踐運動成果發表暨頒獎典禮，本院榮獲1組優秀團隊獎、1組創意獎",cat:"award"},
+  {date:"112/02/21",text:"2023年品質提升活動運作說明會",cat:"internal"},
+  {date:"112/02/17",text:"陳欽明主任擔任第十八屆環台醫療策略聯盟醫療品質成果發表競賽評審",cat:"forum"},
+  {date:"112/02/16",text:"2022年品質提升活動期末成果發表競賽暨院際交流活動",cat:"internal"},
+  {date:"112/02/14",text:"陳欽明主任擔任澄清醫療體系2022年體系成果發表會評審",cat:"forum"},
+  {date:"112/02/10",text:"陳欽明主任擔任北醫第17屆菁品盃競賽評審",cat:"forum"},
+  {date:"112/02/09",text:"SDM 輔導－神外腦下垂體手術方式（李美娟藥師）",cat:"internal"},
+  {date:"112/02/07",text:"品管中心春酒餐敘",cat:"internal"},
+  {date:"112/01/16",text:"Belize 3位護理人員至品質管理中心學習交流（1/16–2/3）",cat:"visit"},
+  {date:"112/01/15",text:"奇美醫學中心望年會",cat:"internal"},
+  {date:"112/01/14",text:"主治醫師暨眷屬年終餐敘",cat:"internal"},
+  {date:"112/01/12",text:"醫策會 NHQA 頒獎典禮，本院強心圈榮獲主題類銅獎、CEOs圈榮獲銀獎、好孕圈榮獲優選及創意獎、寶貝呼呼圈榮獲佳作；智慧醫療類標章；實證醫學類持續參與特別獎15年；文獻查證臨床組金獎",cat:"award"},
+  {date:"112/01/10",text:"2022年品管輔導員進階課程，講師：陳建宇顧問",cat:"training"},
+]
+,
+"111":[
+  {date:"111/12/30",text:"醫品協會競賽決賽發表暨頒獎典禮，本院榮獲THQA持續品質改善貢獻獎、品管圈團體獎；強心圈、好孕圈、足穩圈榮獲銀品獎；寶貝呼呼圈榮獲銅品獎；CEOs圈、ICG圈榮獲優品獎",cat:"award"},
+  {date:"111/12/30",text:"申請腦中風照護(效期至112/03/31)、創傷性腦損傷照護(效期至112/03/31)及疼痛照護(效期至112/06/30)團隊之醫策會疾病照護品質再認證作業",cat:"cert"},
+  {date:"111/12/29",text:"Tableau模板優化輔導",cat:"training"},
+  {date:"111/12/29",text:"SDM輔導-神外腦下垂體手術方式(李美娟藥師)",cat:"training"},
+  {date:"111/12/28",text:"生策會SNQ競賽實地審查「數位財務與會計」",cat:"award"},
+  {date:"111/12/22",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/12/22",text:"指標稽核，稽核員：陳奇祥醫秘、周淑蓮高專。",cat:"cert"},
+  {date:"111/12/21",text:"2022年品管輔導員基礎課程，講師：陳建宇顧問",cat:"training"},
+  {date:"111/12/21",text:"病安列車第七站-「影像醫學部」",cat:"internal"},
+  {date:"111/12/20",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/12/16",text:"111年溝通關懷進階課程(第二梯次)。講師：陳志金主任、蔡雅雯醫檢師、柯雅婷督導。",cat:"training"},
+  {date:"111/12/16",text:"高雄榮民總醫院電子同意書參訪",cat:"visit"},
+  {date:"111/12/09",text:"2022年健康照護聯合學術研討會暨台灣健康照護品質管理競賽頒獎典禮，本院榮獲團體論文競賽「研究風氣優良獎」、「研究成效優良獎」",cat:"forum"},
+  {date:"111/12/09",text:"台大電子同意書簽署與管理參訪",cat:"visit"},
+  {date:"111/12/08",text:"醫策會2022年提升正向病安文化分享會及陳欽明主任專題演講「營造正向病安文化之韌性組織」。",cat:"forum"},
+  {date:"111/12/07",text:"111年全人特色醫療決賽",cat:"internal"},
+  {date:"111/12/06",text:"全院演講：林宏榮院長主講-成為民眾最信賴的醫院。訂定2023奇美醫學中心策略目標「一.迎戰癌症海嘯」、「二.發展特色醫療」、「三.全人全程全家」、「四.完整醫療網絡」、「五.樂在團隊合作」、「六.教學與時俱進」、「七.推動自主研究」。",cat:"training"},
+  {date:"111/12/05",text:"中衛發展中心2022年台灣持續改善競賽(TCIA)現場發表：強心圈榮獲銀塔3星獎、CEOs圈榮獲銅塔3星獎",cat:"award"},
+  {date:"111/11/29",text:"疾病品質授證典禮：慢性肺阻塞照護、糖尿病照護、慢性肺阻塞團隊優秀論文入選",cat:"cert"},
+  {date:"111/11/25",text:"SDM輔導-神外腦下垂體手術方式(李美娟藥師)",cat:"training"},
+  {date:"111/11/23",text:"111年溝通關懷進階課程(第一梯次)。講師：陳志金主任、胡文馨社工師、何詩君臨床心理師。",cat:"training"},
+  {date:"111/11/22",text:"醫策會人因工程輔導-救生圈",cat:"training"},
+  {date:"111/11/18",text:"全人特色醫療發表會初賽(2)",cat:"internal"},
+  {date:"111/11/18",text:"SDM輔導-喉癌病人治療選擇(李美娟藥師)",cat:"training"},
+  {date:"111/11/17",text:"全人特色醫療發表會初賽(1)",cat:"internal"},
+  {date:"111/11/11",text:"台北醫學大學附設醫院標竿本院評鑑準備及交流(醫中評鑑作業籌備與五大任務因應、智慧醫療與資通安全)",cat:"cert"},
+  {date:"111/11/11",text:"衛福部111年醫療事故關懷服務績優頒獎典禮(奇美醫院及林宏榮院長獲頒關懷服務績優團體獎及績優個人獎)",cat:"internal"},
+  {date:"111/11/08",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/11/08",text:"NHQA競賽現場發表-強心圈",cat:"award"},
+  {date:"111/11/03",text:"醫策會2022韌性與正向病安文化營造工作坊",cat:"forum"},
+  {date:"111/11/02",text:"SDM輔導-乳癌化療追蹤選擇(李美娟藥師)",cat:"training"},
+  {date:"111/11/01",text:"SDM輔導-泌尿外科(蔡長志醫師)",cat:"training"},
+  {date:"111/11/01",text:"品管中心標準化文件輔導(二階文件)",cat:"training"},
+  {date:"111/10/31",text:"NHQA競賽，團隊現場發表",cat:"award"},
+  {date:"111/10/28",text:"台北醫學大學附設醫院醫務部蒞院標竿交流(醫院評鑑訪查清單系統、SDM、DRG編審制度與執行)",cat:"cert"},
+  {date:"111/10/26",text:"溝通關懷R2課程&Joy in Teamwork「做大腦的主人-超省力舒壓術」。講師：顏慧詩臨床心理師(心物語治療所)",cat:"training"},
+  {date:"111/10/25",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/10/21",text:"SDM輔導-喉癌病人治療選擇(李美娟藥師)",cat:"training"},
+  {date:"111/10/19",text:"病安列車-呼吸照護領域",cat:"internal"},
+  {date:"111/10/18",text:"Coaching 培訓工作坊(李穎俐督導)",cat:"training"},
+  {date:"111/10/06",text:"醫策會-TCPI-ICU指標討論會",cat:"forum"},
+  {date:"111/09/30",text:"醫策會品質認證改善進度報告繳交：疼痛照護27個月、冠心症照護15個月、腎臟病照護15個月",cat:"cert"},
+  {date:"111/09/29",text:"111年專科座談-臨床病理部、精準醫學中心、傷口中心",cat:"forum"},
+  {date:"111/09/28",text:"SDM輔導-乳癌化療追蹤選擇(李美娟藥師)",cat:"training"},
+  {date:"111/09/27",text:"醫策會TCPI指標討論會",cat:"forum"},
+  {date:"111/09/27",text:"111年專科座談-緩和醫療中心、呼吸治療科、腦創傷中心",cat:"forum"},
+  {date:"111/09/26",text:"醫策會NHQA實審-寶貝呼呼圈",cat:"award"},
+  {date:"111/09/23",text:"Tableau輔導",cat:"training"},
+  {date:"111/09/22",text:"2022年RCA根本原因分析種子培訓課程(下)",cat:"training"},
+  {date:"111/09/22",text:"111年專科座談-家庭醫學部、職業醫學科、健檢中心",cat:"forum"},
+  {date:"111/09/22",text:"病安週響應活動暨藥師說藥",cat:"internal"},
+  {date:"111/09/21",text:"111年專科座談-急診醫學部、全人醫療科、老年醫學科",cat:"forum"},
+  {date:"111/09/20",text:"111年專科座談-加護醫學部、骨科部、復健部",cat:"forum"},
+  {date:"111/09/20",text:"醫策會NHQA實審-ICG圈、好孕圈",cat:"award"},
+  {date:"111/09/19",text:"111年專科座談-神經內科、腦中風中心",cat:"forum"},
+  {date:"111/09/15",text:"111年專科座談-護理部",cat:"forum"},
+  {date:"111/09/14",text:"中衛競賽實地審查-強心圈、好孕圈、CEOs圈",cat:"award"},
+  {date:"111/09/14",text:"SDM輔導-早期肝癌治療選擇(李穎俐督導)",cat:"training"},
+  {date:"111/09/06",text:"醫策會NHQA實審-CEOs圈",cat:"award"},
+  {date:"111/09/05",text:"111年新進住院醫師R1基礎課程：自我關懷。講師：胡文馨社工師",cat:"training"},
+  {date:"111/09/02",text:"SDM輔導-乳癌化療追蹤選擇(李美娟藥師)",cat:"training"},
+  {date:"111/09/02",text:"衛生福利部111年創新整合跨層級照護模式計畫說明會",cat:"internal"},
+  {date:"111/09/01",text:"2022年RCA根本原因分析種子培訓課程(中)",cat:"training"},
+  {date:"111/08/30",text:"醫策會-TCPI急診和AMI指標討論會(彰化基督教醫院)",cat:"forum"},
+  {date:"111/08/29",text:"醫策會-111醫院病人安全年度目標推廣課程(視訊)",cat:"forum"},
+  {date:"111/08/24",text:"SDM輔助工具製作原則與網路資源介紹(李美娟藥師)",cat:"training"},
+  {date:"111/08/18",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/08/17",text:"醫策會NHQA面談-強心圈",cat:"award"},
+  {date:"111/08/16",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/08/16",text:"《醫療事故預防及爭議處理法》之鳥瞰與分析。講師：謝宛婷主任。",cat:"training"},
+  {date:"111/08/12",text:"藥害救濟基金會與本院假553會議室共同舉辦「關懷人才訓練課程」，講師：林宏榮院長、謝宛婷主任、翁子傑醫師、胡文馨社工師、蔡雅雯醫檢師、何詩君臨床心理師。",cat:"training"},
+  {date:"111/08/11",text:"111年專科座談-內分泌新陳代謝科、腎臟科",cat:"forum"},
+  {date:"111/08/09",text:"BPH手術選擇(蔡長志主任)",cat:"training"},
+  {date:"111/08/08",text:"醫策會-人因工程諮詢輔導",cat:"training"},
+  {date:"111/08/08",text:"111年專科座談-泌尿外科、心臟外科、整形外科",cat:"forum"},
+  {date:"111/08/05",text:"111年PGY職前訓練_病人安全整合訓練：安全行醫，快樂工作。講師：陳志金主任",cat:"training"},
+  {date:"111/08/04",text:"台灣醫務管理學會競賽決賽發表會",cat:"award"},
+  {date:"111/08/04",text:"2022年RCA根本原因分析種子培訓課程(上)",cat:"training"},
+  {date:"111/08/01",text:"邱仲慶：董事、兼經營決策委員會 副主任委員、兼總院 榮譽院長。林宏榮：總院院長。田宇峯：總院 首席醫療副院長、兼精準醫學中心 主任。郭行道：總院 醫療副院長、兼內科部胃腸肝膽科肝膽科 主任。",cat:"internal"},
+  {date:"111/07/28",text:"SDM輔導-早期肝癌治療選擇(李穎俐督導)",cat:"training"},
+  {date:"111/07/27",text:"2022年品質提升活動期中發表會暨2021效果維持審查",cat:"award"},
+  {date:"111/07/14",text:"SDM介紹及平台操作(李美娟藥師)",cat:"training"},
+  {date:"111/07/08",text:"醫策會-TCPI跌倒指標討論會(線上)",cat:"forum"},
+  {date:"111/07/05",text:"SDM輔導-乳房重建選擇(李美娟藥師)",cat:"training"},
+  {date:"111/07/01",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/06/30",text:"糖尿病照護品質認證繳交醫策會3個月改善進度報告，心衰、關節照護品質認證繳交醫策會15個月改善進度報告",cat:"cert"},
+  {date:"111/06/29",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/06/28",text:"創傷性腦損傷照護品質認證繳交醫策會27個月改善進度報告",cat:"cert"},
+  {date:"111/05/28",text:"腦中風照護品質認證繳交醫策會27個月改善進度報告",cat:"cert"},
+  {date:"111/05/27",text:"醫策會-TCPI指標說明會",cat:"forum"},
+  {date:"111/05/20",text:"張國昌顧問-品質提升活動進度輔導",cat:"training"},
+  {date:"111/05/18",text:"SDM輔導-一般外科(蔡長志主任)",cat:"training"},
+  {date:"111/05/12",text:"SDM輔導-早期肝癌治療(李穎俐督導)",cat:"training"},
+  {date:"111/05/10",text:"陳建宇顧問-遠距線上品質提升活動輔導",cat:"training"},
+  {date:"111/05/09",text:"戰情指揮中心成立，於111/5/9~111/7/15期間，由感染管制中心、安全衛生管理室、品質管理中心及防疫指揮中心工作小組成員輪值。",cat:"internal"},
+  {date:"111/05/06",text:"醫療科技問題與病人安全風險會議(線上教育訓練)",cat:"forum"},
+  {date:"111/05/05",text:"SDM輔導-冠心症(李美娟藥師)",cat:"training"},
+  {date:"111/05/04",text:"SDM輔導-停經前乳癌術後治療選擇(蔡長志主任)",cat:"training"},
+  {date:"111/05/03",text:"SDM輔導-乳房重建選擇(李美娟藥師)",cat:"training"},
+  {date:"111/04/29",text:"【奇美心動力，關懷e奇來】線上專訪第10集「疫情下的心理支持」：陳志金主任主持，林宏榮首席醫療副院長、何詩君臨床心理師與談",cat:"training"},
+  {date:"111/04/28",text:"111年專科座談- 胃腸肝膽科、胸腔內科、一般內科",cat:"forum"},
+  {date:"111/04/21",text:"SDM輔導-心房顫動電燒治療(李美娟藥師)",cat:"training"},
+  {date:"111/04/20",text:"張國昌顧問-2022年院外品質競賽輔導",cat:"training"},
+  {date:"111/04/20",text:"SDM輔導-乳癌術後賀爾蒙治療選擇(蔡長志主任)",cat:"training"},
+  {date:"111/04/20",text:"111年專科座談-婦產部、放射診斷科、核子醫學科",cat:"forum"},
+  {date:"111/04/19",text:"張國昌顧問-2022年品質提升活動-進階課程(HFMEA、預防型、流程改造)",cat:"training"},
+  {date:"111/04/18",text:"111年專科座談-感染科、腎臟科、風濕免疫科",cat:"forum"},
+  {date:"111/04/15",text:"SDM輔導-TAVI(蔡長志主任、李美娟藥師)",cat:"training"},
+  {date:"111/04/14",text:"111年專科座談- 一般外科、外傷科、移植外科",cat:"forum"},
+  {date:"111/04/14",text:"陳建宇顧問-2022年品質提升活動-初階課程(問題型、課達型)",cat:"training"},
+  {date:"111/04/13",text:"陳建宇顧問-2022年院外品質競賽輔導",cat:"training"},
+  {date:"111/04/13",text:"【奇美心動力，關懷e奇來】線上專訪第9集「上班也累，下班也累？讓減法的力量拯救你」：陳志金主任主持，謝宛婷主任與談",cat:"training"},
+  {date:"111/04/12",text:"醫策會TCPI臨床成效指標發表會",cat:"forum"},
+  {date:"111/04/11",text:"111年專科座談-心臟內科、血液腫瘤科、藥劑部",cat:"forum"},
+  {date:"111/04/07",text:"SDM輔導-心房顫動電燒治療(李美娟藥師)",cat:"training"},
+  {date:"111/03/31",text:"慢性肺阻塞COPD疾病照護品質認證繳交醫策會3個月改善進度報告",cat:"cert"},
+  {date:"111/03/31",text:"SDM輔導-冠心症(李美娟藥師)",cat:"training"},
+  {date:"111/03/30",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/03/29",text:"張國昌顧問-2022年院外品質競賽輔導",cat:"training"},
+  {date:"111/03/24",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"111/03/23",text:"【奇美心動力，關懷e奇來】線上專訪第8集「手術安全TRM」：陳志金主任主持，蕭素秋督導、張進宏部長與談",cat:"training"},
+  {date:"111/03/17",text:"2022年品質提升活動通識課程-多元品管手法及工具簡介。講師：陳建宇顧問",cat:"training"},
+  {date:"111/03/12",text:"北醫體系聯合發表會視訊課程-智能全人，讓醫療照護更有溫度",cat:"forum"},
+  {date:"111/03/09",text:"【奇美心動力，關懷e奇來】線上專訪第7集「裂縫是光照進來的契機，逆境是偽裝的祝福」：陳志金主任主持，李文瑛主任與談",cat:"training"},
+  {date:"111/03/08",text:"2022年品質提升活動運作說明會",cat:"training"},
+  {date:"111/03/04",text:"品管輔導員交流共識會暨授證儀式",cat:"training"},
+  {date:"111/03/03",text:"2021年品質提升活動期末發表會",cat:"award"},
+  {date:"111/02/25",text:"2021病人安全週與醫病共享決策實踐運動成果發表暨頒獎典禮，本院榮獲3組優秀團隊獎、1組創新獎",cat:"award"},
+  {date:"111/02/25",text:"全人特色醫療發表會決賽",cat:"internal"},
+  {date:"111/02/23",text:"病安列車第五站-「臨床病理部」",cat:"internal"},
+  {date:"111/02/23",text:"【奇美心動力，關懷e奇來】線上專訪第6集「擁抱剝離般脆弱的生命」：陳志金主任主持，翁子傑醫師與翁媽媽與談",cat:"training"},
+  {date:"111/02/22",text:"院內品管輔導員筆試/面談",cat:"training"},
+  {date:"111/02/16",text:"【奇美心動力，關懷e奇來】線上專訪第5集「樂在工作中」：陳志金主任主持，馬淑清部長、陳惠滿護理長與談",cat:"training"},
+  {date:"111/01/28",text:"疾病照護團隊交流會",cat:"cert"},
+  {date:"111/01/27",text:"2021醫策會NHQA頒獎典禮，本院榮獲2銅(救生圈、藥袋圈)、2佳作(急品圈安老組、救腦二圈)",cat:"award"},
+  {date:"111/01/27",text:"1/17-1/21手術病人辨識稽核結果檢討會",cat:"cert"},
+  {date:"111/01/26",text:"主治醫師年終紅包",cat:"internal"},
+  {date:"111/01/26",text:"【奇美心動力，關懷e奇來】線上專訪第4集「健康整合交給我」：陳志金主任主持，蔡岡廷主任、黃培華個管師與談",cat:"training"},
+  {date:"111/01/24",text:"全人特色醫療發表會初賽(2)",cat:"internal"},
+  {date:"111/01/22",text:"醫療大數據-深入實務 掌握決策(大林慈濟線上直播)",cat:"forum"},
+  {date:"111/01/21",text:"全人特色醫療發表會初賽(1)",cat:"internal"},
+  {date:"111/01/20",text:"廖熏香前醫策會副執行長-RCA團隊輔導",cat:"training"},
+  {date:"111/01/19",text:"NHQA智慧醫療競賽實地審查",cat:"award"},
+  {date:"111/01/15",text:"三院區奇美博物館音樂忘年會",cat:"internal"},
+  {date:"111/01/12",text:"【奇美心動力，關懷e奇來】線上專訪第3集「那些我們身邊的大小事-關懷可以無所不在」：陳志金主任主持，胡文馨社工師、陳岳君護理長與談",cat:"training"},
+  {date:"111/01/05",text:"品管中心餐敘(鴨寮街)",cat:"internal"},
+  {date:"111/01/05",text:"【奇美心動力，關懷e奇來】線上專訪第2集「最重要的小事~你的冰山我一樣在乎」：陳志金主任主持，蘇慧真部長、張愷芳主任與談",cat:"training"},
+],
+"110":[
+  {date:"110/01/13",text:"2020年SNQ國家品質標章暨國家生技醫療品質獎本院榮獲七標章及五戰疫有功獎",cat:"award"},
+  {date:"110/01/15",text:"醫品病安全院演講：愛。行動-談臨床稽核，講師：陳奇祥醫秘",cat:"cert"},
+  {date:"110/01/28",text:"醫策會國家醫療品質獎頒獎典禮本院獲頒一主題類主題改善菁英組銀獎、銅獎、2創意獎、2佳作、主題類主題改善組銀獎;二系統類特色中心;三智慧醫療類佳作、4標章; 四實證醫學類潛力獎、佳作;五擬真情境類銅獎;六防疫動起來防疫貢獻獎、2防疫特別獎",cat:"award"},
+  {date:"110/02/03",text:"人事：定契人員吳婉菁小姐到任",cat:"internal"},
+  {date:"110/02/23",text:"陳奇祥醫秘及孫宗伯主任擔任醫策會110年台灣臨床成效指標專案小組委員",cat:"forum"},
+  {date:"110/02/24",text:"辦理第一梯次品質報告卡優化輔導(臨床資源等五委員會)",cat:"training"},
+  {date:"110/03/04",text:"110年院內品質提升活動期末發表共18組，醫策會廖熏香副執行長、寶建醫院趙正芬副院長、前台南市衛生局局長陳怡顧問任評審委員",cat:"award"},
+  {date:"110/03/05",text:"腎臟疾病照護品質認證預評作業(林宏榮首席醫療副院長、馬淑清部長)",cat:"cert"},
+  {date:"110/03/05",text:"「醫品病安年度目標八-病人家屬參與病安工作」臨床稽核結果總檢討會",cat:"cert"},
+  {date:"110/03/09",text:"病安列車第三站-「麻醉與手術」",cat:"internal"},
+  {date:"110/03/17",text:"第二梯次品質報告卡優化輔導",cat:"training"},
+  {date:"110/04/09",text:"第三梯次品質報告卡優化輔導",cat:"training"},
+  {date:"110/04/13",text:"內科部晨會宣導「呼吸道評估及緊急插管處理作業」",cat:"internal"},
+  {date:"110/04/14",text:"陳建宇顧問2021年品質提升活動-初階品管課程",cat:"training"},
+  {date:"110/04/16",text:"應邀參加分享醫策會P4P申請醫院交流討論會",cat:"internal"},
+  {date:"110/04/20",text:"2021年品質提升活動-競賽輔導(2)",cat:"training"},
+  {date:"110/04/21",text:"外科部晨會宣導「呼吸道評估及緊急插管處理作業」",cat:"internal"},
+  {date:"110/04/21",text:"SDM系列課程：SDM介紹。講師：急診醫學部 蔡長志醫師",cat:"training"},
+  {date:"110/04/21",text:"張國昌顧問2021年品質提升活動-進階品管課程",cat:"training"},
+  {date:"110/04/22",text:"HST智慧醫療專訪：呼吸器AI",cat:"internal"},
+  {date:"110/04/22",text:"手術病人抗血栓藥物使用管理系統優化作業",cat:"internal"},
+  {date:"110/04/22",text:"參加RPA成果發表會及分享成果",cat:"internal"},
+  {date:"110/04/28",text:"舉辦tableau輔導課程",cat:"training"},
+  {date:"110/04/28",text:"醫策會NHQA主題類/系統類視訊課程",cat:"internal"},
+  {date:"110/04/29",text:"冠心症疾病照護品質認證醫策會實地訪查作業",cat:"cert"},
+  {date:"110/05/01",text:"人事：吳婉菁品質管理員到職",cat:"internal"},
+  {date:"110/05/04",text:"SDM系列課程：醫病共享決策資源介紹。講師：藥劑部 李美娟小組長",cat:"training"},
+  {date:"110/05/13",text:"因應covid-19(武漢肺炎)疫情變化，衛福部公告110、111年醫院評鑑暫停",cat:"cert"},
+  {date:"110/05/14",text:"人事：李宜庭品質管理員離職",cat:"internal"},
+  {date:"110/05/18",text:"原訂5/18COPD疾病照護品質認證醫策會實地訪查，因疫情影響，暫緩舉行。",cat:"cert"},
+  {date:"110/05/19",text:"陳建宇顧問遠距線上品質提升活動輔導",cat:"training"},
+  {date:"110/05/25",text:"張國昌顧問遠距線上品質提升活動輔導",cat:"training"},
+  {date:"110/05/27",text:"原訂SDM系列課程-SDM經驗分享(講師:張穎真醫師、鄭巧玲高師)，因covid-19疫情影響，暫緩舉行。",cat:"training"},
+  {date:"110/05/28",text:"腦中風疾病照護品質認證繳交醫策會15個月改善進度報告",cat:"cert"},
+  {date:"110/05/31",text:"因應疫情，品質管理中心會議頻率改為隔週召開一次，並以視訊方式進行。",cat:"internal"},
+  {date:"110/06/01",text:"人事：孫宗伯主任卸任品質管理中心主任職務，由陳欽明副主任接任主任一職。",cat:"internal"},
+  {date:"110/06/08",text:"因疫情影響，通知專科座談取消，各科書面資料於7/30前繳交。",cat:"forum"},
+  {date:"110/06/09",text:"原訂與醫策會共同舉辦「非預期醫療結果第一現場工作坊」，因covid-19疫情影響，暫緩舉行。",cat:"training"},
+  {date:"110/06/16",text:"原訂2021年品質提升活動-競賽面談暨實地審查討論會，因covid-19疫情影響，暫緩舉行。",cat:"internal"},
+  {date:"110/06/23",text:"原訂6/23糖尿病疾病照護品質認證醫策會實地訪查，因covid-19疫情影響，暫緩舉行。",cat:"cert"},
+  {date:"110/06/28",text:"創傷性腦損傷疾病照護品質認證繳交醫策會15個月改善進度報告",cat:"cert"},
+  {date:"110/06/29",text:"張國昌顧問遠距線上品質提升活動輔導",cat:"training"},
+  {date:"110/06/30",text:"心衰竭、關節置換疾病照護品質認證繳交醫策會3個月改善進度報告",cat:"cert"},
+  {date:"110/07/12",text:"SNQ競賽輔導(2組)",cat:"training"},
+  {date:"110/07/13",text:"SNQ競賽輔導(5組)",cat:"training"},
+  {date:"110/08/02",text:"人事：定契人員黃于恬小姐到任",cat:"internal"},
+  {date:"110/08/02",text:"疫情降級，品質管理中心會議頻率改回原每週召開",cat:"internal"},
+  {date:"110/08/06",text:"110年PGY職前訓練_病安系統及預防爭議。講師：陳志金主任",cat:"training"},
+  {date:"110/08/12",text:"110年品質提升活動期中發表共14組，由陳怡顧問、馬淑清部長、蘇慧真部長擔任評審委員",cat:"award"},
+  {date:"110/08/18",text:"SNQ競賽書面資料第二次輔導",cat:"training"},
+  {date:"110/08/19",text:"藥害救濟基金會-醫療事故關懷人才訓練計畫：8/19-8/20奇美醫院辦理視訊核心課程【疫情下的醫病溝通與關懷】",cat:"training"},
+  {date:"110/08/20",text:"藥害救濟基金會-醫療事故關懷人才訓練計畫：8/19-8/20奇美醫院辦理視訊核心課程【疫情下的醫病溝通與關懷】",cat:"training"},
+  {date:"110/08/20",text:"新冠肺炎專責加護病房輔導作業",cat:"internal"},
+  {date:"110/08/23",text:"影像式喉頭鏡(Mcgrath)介紹_護理部",cat:"internal"},
+  {date:"110/08/23",text:"醫策會TCPI 中風&急診指標討論會：本院腦中風照護團隊指標分享",cat:"internal"},
+  {date:"110/08/24",text:"NHQA、中衛競賽面談暨實地審查模擬預演",cat:"training"},
+  {date:"110/08/24",text:"影像式喉頭鏡(Mcgrath)介紹_內科部",cat:"internal"},
+  {date:"110/08/25",text:"張國昌顧問-遠距線上品質提升活動輔導",cat:"training"},
+  {date:"110/08/25",text:"影像式喉頭鏡(Mcgrath)介紹_外科部",cat:"internal"},
+  {date:"110/08/26",text:"影像式喉頭鏡(Mcgrath)介紹_婦產部",cat:"internal"},
+  {date:"110/08/26",text:"影像式喉頭鏡(Mcgrath)介紹_兒科部",cat:"internal"},
+  {date:"110/08/27",text:"SDM系列課程：SDM系統操作介紹。講師：藥劑部 李美娟小組長",cat:"training"},
+  {date:"110/09/01",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"110/09/01",text:"110年新進住院醫師R1基礎課程：自我關懷。講師：胡文馨社工師",cat:"training"},
+  {date:"110/09/10",text:"影像式喉頭鏡(Mcgrath)介紹_骨科部",cat:"internal"},
+  {date:"110/09/14",text:"病安週直播活動【產前】-陳志金主任&王貴靜產前衛教師",cat:"internal"},
+  {date:"110/09/17",text:"SDM系列課程：SDM Coaching培訓工作坊。講師:護理部 李穎俐督導",cat:"training"},
+  {date:"110/09/22",text:"病安週直播活動【孕中&生產】-陳志金主任&郭恬妮主任、徐英倫醫師",cat:"internal"},
+  {date:"110/09/27",text:"2021年防疫溝通CICARE競賽活動計畫說明會",cat:"internal"},
+  {date:"110/09/28",text:"影像式喉頭鏡(Mcgrath)介紹_全院專師",cat:"internal"},
+  {date:"110/09/28",text:"病安週直播活動【產後&新生兒】-陳志金主任&張愷芳主任、周昀醫師",cat:"internal"},
+  {date:"110/09/30",text:"中衛實地審查：救腦二圈、救生圈",cat:"award"},
+  {date:"110/09/30",text:"冠狀動脈疾病、腎臟病照護品質認證繳交醫策會3個月改善進度報告",cat:"cert"},
+  {date:"110/09/30",text:"9/15-9/28「單位常備藥品管理」實地稽核結果檢討會",cat:"cert"},
+  {date:"110/10/01",text:"中衛實地審查：急品圈、健康圈、藥帶圈",cat:"award"},
+  {date:"110/10/01",text:"疼痛照護品質認證繳交醫策會15個月改善進度報告",cat:"cert"},
+  {date:"110/10/05",text:"醫策會NHQA面談：急品圈",cat:"award"},
+  {date:"110/10/06",text:"醫策會NHQA面談：救生圈、救腦二圈",cat:"award"},
+  {date:"110/10/07",text:"根本原因分析(RCA)理論與應用，講師：醫策會前副執行長 廖熏香",cat:"training"},
+  {date:"110/10/13",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"110/10/13",text:"病安列車第四站-「化學治療團隊」",cat:"internal"},
+  {date:"110/10/19",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"110/10/27",text:"110年醫糾關懷R2基礎課程-自我關懷。講師：何詩君臨床心理師",cat:"training"},
+  {date:"110/10/29",text:"10/12-10/27「防疫相關措施」臨床稽核結果檢討會：(1)陪、探病管理-6A、8A、4BICU、(2)防疫地圖篩檢流程、(3)防疫指揮中心重要決策宣導。",cat:"cert"},
+  {date:"110/11/02",text:"2021年防疫溝通CICARE競賽活動-11/2-11/9書面審查",cat:"internal"},
+  {date:"110/11/05",text:"糖尿病疾病照護品質預評作業(委員：高雄鳳山醫院 廖上智院長 )",cat:"cert"},
+  {date:"110/11/12",text:"疫情下的醫病溝通與關懷視訊課程(新竹縣政府衛生局)。講師：翁子傑醫師、蔡雅雯醫檢師、何詩君臨床心理師。",cat:"training"},
+  {date:"110/11/18",text:"2021年防疫溝通CICARE競賽活動-現場發表會。委員：邱浩遠顧問、林秀娟教授、林宏榮副院長、蘇慧真部長。(17組)",cat:"internal"},
+  {date:"110/11/19",text:"COPD慢性阻塞性肺病疾病照護品質認證醫策會實地訪查作業",cat:"cert"},
+  {date:"110/11/30",text:"2021年防疫溝通CICARE競賽活動-決賽發表會。委員：邱仲慶院長、林宏榮副院長、田宇峯副院長、陳綉琴副院長、陳奇祥醫秘",cat:"internal"},
+  {date:"110/11/30",text:"舉辦tableau輔導進階課程",cat:"training"},
+  {date:"110/11/30",text:"110年醫糾關懷進階課程-醫糾關懷調解能力培訓工作坊(第一梯次)。講師：翁子傑醫師、蔡雅雯醫檢師、何詩君臨床心理師。",cat:"training"},
+  {date:"110/12/04",text:"2021醫管學會競賽頒獎典禮，本院榮獲1銀(藥袋圈)、1銅(強心圈)、3佳作(強心圈、CEOs圈、保溫圈)",cat:"award"},
+  {date:"110/12/04",text:"2021醫品協會競賽頒獎典禮，本院榮獲3金(救生圈、藥袋圈、急品圈安老組)、1銀(血緣圈)、1銅(救腦二圈)、1創新獎(急品圈安老組)、1優良海報獎(骨勵圈)",cat:"award"},
+  {date:"110/12/09",text:"張國昌顧問-品質提升活動輔導",cat:"training"},
+  {date:"110/12/09",text:"「非預期醫療結果的第一現場」線上視訊課程(醫策會)。講師：陳志金主任、蔡雅雯醫檢師",cat:"training"},
+  {date:"110/12/10",text:"110年醫糾關懷進階課程-醫糾關懷調解能力培訓工作坊(第二梯次)。講師：翁子傑醫師、蕭素秋督導、胡文馨社工師。",cat:"training"},
+  {date:"110/12/15",text:"陳建宇顧問-品質提升活動輔導",cat:"training"},
+  {date:"110/12/16",text:"疾病品質授證典禮：疼痛照護、心衰竭照護、關節置換照護、腎臟病照護、冠狀動脈照護",cat:"cert"},
+  {date:"110/12/22",text:"品質管理中心尾牙餐敘(金富菊日式料理)",cat:"internal"},
+  {date:"110/12/22",text:"DM糖尿病疾病照護品質認證醫策會實地訪查作業",cat:"cert"},
+  {date:"110/12/24",text:"2021年防疫溝通CICARE競賽頒獎，1金(心臟內科)、1銀(護理部)、3銅(4AICU、牙醫部、急診醫學部)、3佳作(麻醉部、病嬰室/兒科部、6BICU)",cat:"internal"},
+  {date:"110/12/29",text:"【奇美心動力，關懷e奇來】線上專訪首播「醫療人員的自癒癒人」：陳志金主任主持，林宏榮首席醫療副院長主講、何詩君臨床心理師與談。",cat:"training"},
+],
+"109":[
+  {date:"109/01/03",text:"進行手術室臨床稽核",cat:"cert"},
+  {date:"109/01/07",text:"進行第一梯次院內品質報告卡輔導",cat:"internal"},
+  {date:"109/01/14",text:"進行第二梯次院內品質報告卡輔導",cat:"internal"},
+  {date:"109/01/16",text:"三院區品質管理中心聯誼會",cat:"internal"},
+  {date:"109/01/16",text:"醫策會腦中風照護品質認證實地審查",cat:"cert"},
+  {date:"109/01/19",text:"三院區主治醫師歲末聯誼會",cat:"internal"},
+  {date:"109/01/21",text:"進行第三梯次院內品質報告卡輔導",cat:"internal"},
+  {date:"109/01/21",text:"預防跌倒病室浴廁環境檢視",cat:"internal"},
+  {date:"109/02/13",text:"腦創傷疾病照護品質院內預評",cat:"internal"},
+  {date:"109/02/14",text:"Tableau團隊輔導工作坊",cat:"training"},
+  {date:"109/02/14",text:"輸血暨高風險醫療數值臨床稽核",cat:"cert"},
+  {date:"109/02/19",text:"108年品質提升活動期末發表",cat:"forum"},
+  {date:"109/02/24",text:"洗手消毒衛生抗疫運動籌備會",cat:"internal"},
+  {date:"109/02/25",text:"品質指標視覺劃設暨成果發表會",cat:"forum"},
+  {date:"109/03/01",text:"陳奇祥醫務秘書及孫宗伯主任應醫策會聘請擔任109年台灣臨床成效指標專案小組委員",cat:"internal"},
+  {date:"109/03/04",text:"辦理疼痛照護品質認證預評作業",cat:"internal"},
+  {date:"109/03/06",text:"通過醫策會腦中風照護品質認證評量效期自109年2月28日起至112年3月31日止",cat:"award"},
+  {date:"109/03/09",text:"接受醫策會疼痛照護品質認證實地訪查",cat:"cert"},
+  {date:"109/03/11",text:"至外科部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/11",text:"於奇美醫療體系防疫指揮中心週會報告洗手消毒衛生抗疫活動推動規劃",cat:"internal"},
+  {date:"109/03/12",text:"至加護醫學部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/12",text:"至急診醫學部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/12",text:"越南Khanh Hoa General Hospital Dr. Mai Dang Tu Nhi 及尼泊爾Manm Ohan Memorial Medical College And Teaching Hospital (MMTH) Dr. Rajiv Nakarmi接受醫療品質培訓",cat:"training"},
+  {date:"109/03/17",text:"至內科部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/17",text:"陳建宇顧問蒞院進行品質提升活動輔導",cat:"training"},
+  {date:"109/03/18",text:"辦理新興傳染病感控流程臨床實地稽核",cat:"cert"},
+  {date:"109/03/19",text:"至婦產部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/19",text:"至護理部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/23",text:"至兒科部推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/24",text:"張國昌顧問蒞院進行院外品質競賽輔導",cat:"award"},
+  {date:"109/03/24",text:"進行負壓隔離病房急救演練實地稽核",cat:"cert"},
+  {date:"109/03/25",text:"至總務室外包單位推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/03/25",text:"張國昌顧問蒞院進行品質提升活動輔導",cat:"training"},
+  {date:"109/03/27",text:"辦理新興傳染病感控流程臨床實地稽核之追蹤稽核",cat:"cert"},
+  {date:"109/03/30",text:"通過醫策會創傷性腦損傷照護品質認證效期自109年3月28日起至112年3月31日止",cat:"award"},
+  {date:"109/04/01",text:"辦理新興傳染病感控流程樹林院區臨床實地稽核",cat:"cert"},
+  {date:"109/04/07",text:"進行負壓隔離病房急救演練實地稽核追蹤稽核",cat:"cert"},
+  {date:"109/04/08",text:"奇美醫療體系防疫指揮中心架構調整品質管理中心納入醫療執行組承擔公共衛生班任務",cat:"internal"},
+  {date:"109/04/10",text:"肺炎專區團隊及救演練",cat:"internal"},
+  {date:"109/04/13",text:"至教學中心向新到任實習醫生推動洗手消毒衛生抗疫活動",cat:"internal"},
+  {date:"109/04/15",text:"於奇美醫療體系防疫指揮中心週會報告醫病溝通團結抗疫專案推動規劃",cat:"internal"},
+  {date:"109/04/17",text:"辦理手術室外麻醉鎮靜臨床實地稽核",cat:"cert"},
+  {date:"109/04/23",text:"「洗手消毒衛生抗疫」推行運動第一階段頒獎，手部衛生優良獎:4AICU、健檢中心。創意短片人氣優選:藥劑部、7A、護理部、居家護理所。創意短片佳作：5A、企管部、睡眠中心、4A、12B、社服部、復健部",cat:"award"},
+  {date:"109/04/27",text:"檢視10B負壓隔離病房插管流程",cat:"internal"},
+  {date:"109/05/04",text:"推動「醫病溝通團結抗疫」專案",cat:"internal"},
+  {date:"109/05/11",text:"推動「HQIC防疫動起來、SNQ戰疫特別獎」防疫徵稿活動",cat:"award"},
+  {date:"109/05/14",text:"陳建宇顧問蒞院進行品質提升活動輔導",cat:"training"},
+  {date:"109/05/20",text:"張國昌顧問蒞院進行品質提升活動輔導",cat:"training"},
+  {date:"109/05/22",text:"辦理藥物治療標準作業程序臨床實地稽核",cat:"cert"},
+  {date:"109/05/23",text:"應邀參與台大公衛學院健管所新冠肺炎醫療管理與政策論壇",cat:"forum"},
+  {date:"109/05/26",text:"至內科部推動「醫病溝通團結抗疫」活動",cat:"internal"},
+  {date:"109/08/27",text:"「洗手消毒衛生抗疫」推行運動第二階段頒獎，手部衛生優良獎:12A病房。創意短片人氣優選:癌症中心、7B、教學中心。創意短片佳作：健康管理中心、企管部、RCC、10B、4BICU、12A",cat:"award"},
+  {date:"109/05/28",text:"至兒科部、加護醫學部推動「醫病溝通團結抗疫」活動",cat:"internal"},
+  {date:"109/05/29",text:"醫病共享決策輔助工具(PDA)基礎概念及選用講座(視訊場)，共22人參加",cat:"internal"},
+  {date:"109/05/29",text:"繳交醫策會「腦中風疾病照護品質認證通過後之三個月改善計畫進度報告」",cat:"internal"},
+  {date:"109/05/31",text:"醫策會「HQIC防疫動起來」，本院共36篇投稿作品",cat:"internal"},
+  {date:"109/06/03",text:"至外科部推動「醫病溝通團結抗疫」活動",cat:"internal"},
+  {date:"109/06/04",text:"至急診醫學部部推動「醫病溝通團結抗疫」活動",cat:"internal"},
+  {date:"109/06/05",text:"擔任台灣臨床成效指標TCPI討論會出院14天內因相同或相關病情非計畫性在住院主持人",cat:"forum"},
+  {date:"109/06/11",text:"至婦產部推動「醫病溝通團結抗疫」活動",cat:"internal"},
+  {date:"109/06/12",text:"辦理多重或重大外傷照護流程臨床實地稽核",cat:"cert"},
+  {date:"109/06/17",text:"品質提升活動RCA理論與應用，共120人參加概論課程、42人接受實作輔導",cat:"training"},
+  {date:"109/06/19",text:"貝里斯護理人員Vivian Villas, Lusbei Can, Sheila Daywi, Elvita Choco, Enelie Alfaro接受醫療品質培訓",cat:"training"},
+  {date:"109/06/23",text:"陳建宇顧問蒞院進行品質提升活動輔導",cat:"training"},
+  {date:"109/06/24",text:"「洗手消毒衛生抗疫」推行運動第三階段頒獎，手部衛生優良獎:5B病房。創意短片人氣優選:6A、6BICU。創意短片佳作：嬰兒室、8A、RCC",cat:"award"},
+  {date:"109/07/02",text:"「2020年國家醫療品質獎防疫動起來！join us fighting covid!」投稿結果本院目前共錄取39篇（26篇解決方案、13篇溫馨故事)",cat:"award"},
+  {date:"109/07/02",text:"專科座談(心內、神內、內分泌、胃腸、一般內科)",cat:"forum"},
+  {date:"109/07/17",text:"陳月梅病安管理師參與醫療品質學院中階課程-109年醫療團隊資源管理(TRM)基礎課程",cat:"training"},
+  {date:"109/07/22",text:"孫宗伯主任應邀參與北市聯醫關鍵指標系統制定會議",cat:"internal"},
+  {date:"109/07/22",text:"辦理本院COPD照護團隊赴成大醫院交流參訪",cat:"visit"},
+  {date:"109/07/23",text:"出席醫策會2020年臨床成效指標運用暨病安文化營造發表會，本院10篇論文發表，榮獲品質深耕獎、熱心分享獎，孫宗伯主任、陳奇祥醫務秘書獲頒特殊貢獻獎。",cat:"forum"},
+  {date:"109/07/24",text:"辦理臨床實地稽核：預防病人跌倒及降低傷害程度(第一梯次)",cat:"cert"},
+  {date:"109/07/25",text:"石崇良司長蒞院輔導院內品質提升RCA活動",cat:"internal"},
+  {date:"109/07/27",text:"張國昌顧問蒞院進行院內品質提升活動進度輔導及PDCA課程講座",cat:"training"},
+  {date:"109/07/30",text:"辦理Tableau初階訓練課程",cat:"training"},
+  {date:"109/08/04",text:"張國昌顧問蒞院進行院內品質提升活動進度輔導及院外競賽面談輔導",cat:"award"},
+  {date:"109/08/05",text:"台大醫院心臟科李啟明教授蒞院輔導心衰竭照護品質認證",cat:"internal"},
+  {date:"109/08/06",text:"參與醫策會腎臟病臨床稽核實踐班課南部場",cat:"cert"},
+  {date:"109/08/07",text:"全院演講-正向文化-病安醫品系列教育課程孫宗伯主任",cat:"training"},
+  {date:"109/08/11",text:"台南市督考暨急重症訪查",cat:"internal"},
+  {date:"109/08/12",text:"林麗華顧問進行SNQ第二次輔導",cat:"award"},
+  {date:"109/08/13",text:"接受醫策會心衰竭疾病照護品質認證實地審查",cat:"cert"},
+  {date:"109/08/14",text:"辦理SNQ競賽防疫主題工作坊",cat:"award"},
+  {date:"109/08/15",text:"參與台灣醫療品質協會理監事選舉",cat:"internal"},
+  {date:"109/08/19",text:"辦理院內品質提升活動期中發表會共18組隊參與",cat:"forum"},
+  {date:"109/08/21",text:"孫宗伯主任台南新樓醫院演講「建立正向文化推動品質改善之經驗分享」",cat:"training"},
+  {date:"109/08/21",text:"參與109年醫院病人安全年度目標推廣課程林宏榮副院長及孫宗伯主任擔任主講人",cat:"training"},
+  {date:"109/08/27",text:"參與台灣臨床成效指標(TCPI) 急性心肌梗塞照護、急性中風照護指標討論會，腦中風中心林慧娟主任出席分享",cat:"forum"},
+  {date:"109/08/27",text:"參與醫策會病人安全文化調查(PSC)營造活動-醫院防疫與系統性復原力",cat:"internal"},
+  {date:"109/08/28",text:"參加醫策會年度品質認證授證典禮暨記者會，本院腦中風、外傷性腦損傷、健檢中心組隊獲得授證，健檢中心應邀分享認證經驗",cat:"award"},
+  {date:"109/09/01",text:"辦理醫糾關懷培訓_基礎自我關懷課程",cat:"training"},
+  {date:"109/09/04",text:"全院演講-品管圈運作-病安醫品系列教育課程/陳欽明副主任",cat:"training"},
+  {date:"109/09/04",text:"孫宗伯主任應邀至國泰醫院分享抗凝血劑停藥團隊決策",cat:"forum"},
+  {date:"109/09/09",text:"醫策會於本院辦理SDM臨床人員輔導座談會(腦傷)",cat:"forum"},
+  {date:"109/09/10",text:"2020台灣醫務管理學會競賽決賽發表本院7團隊參加， 獲得1金2銀3佳作1入選佳績。",cat:"award"},
+  {date:"109/09/11",text:"中衛競賽實地審查，本院藥帶圈、強心圈、CEOs二圈接受審查",cat:"award"},
+  {date:"109/09/15",text:"強心圈參加醫策會國家醫療品質競賽面談",cat:"award"},
+  {date:"109/09/15",text:"陳建宇顧問蒞院進行院內品質提升活動進度輔導",cat:"training"},
+  {date:"109/09/16",text:"孫宗伯主任擔任醫策會品質改善成果撰寫與投稿技巧工作坊講師",cat:"training"},
+  {date:"109/09/16",text:"張國昌顧問蒞院進行院內品質提升活動進度輔導",cat:"training"},
+  {date:"109/09/18",text:"辦理 臨床實地稽核：預防病人跌倒及降低傷害程度(樹林分院)",cat:"cert"},
+  {date:"109/09/22",text:"接受衛福部107年P4P計畫經費查核_三普會計事務所",cat:"internal"},
+  {date:"109/09/22",text:"辦理病安列車活動：目標二、營造病人安全文化及落實病人安全事件管理",cat:"internal"},
+  {date:"109/09/23",text:"孫宗伯主任主講P4P群組教育訓練-臨床成效指標管理",cat:"internal"},
+  {date:"109/09/23",text:"辦理P4P群組檢討會議計9家醫院參與",cat:"internal"},
+  {date:"109/09/24",text:"於台南市美術館辦理病安週快閃活動【為病安發聲、共譜和諧樂章】",cat:"internal"},
+  {date:"109/09/24",text:"參與腎臟病臨床稽核實踐班課南部場",cat:"cert"},
+  {date:"109/09/25",text:"辦理109全人特色醫療競賽初賽第一場計6隊參加",cat:"award"},
+  {date:"109/09/28",text:"醫策會於本院舉辦醫病共享決策臨床導入工作坊計24家醫院派員參加",cat:"training"},
+  {date:"109/09/29",text:"辦理109全人特色醫療競賽初賽第二場計8隊參加",cat:"award"},
+  {date:"109/09/30",text:"辦理疾病照護品質認證團隊期中交流餐會計12疾病照護別67人參加",cat:"internal"},
+],
+"108":[
+  {date:"108/01/07",text:"周淑蓮高專赴朴子醫院進行P4P指標稽核輔導",cat:"cert"},
+  {date:"108/01/08",text:"陳志金副主任、郭雅薇高專接受財經雙週刊專欄採訪",cat:"internal"},
+  {date:"108/01/08",text:"陳奇祥部長全院學術演講「以病人流概念進行品質指標管理 」",cat:"training"},
+  {date:"108/01/08",text:"舉辦Tableau指標視覺化呈現工作坊",cat:"training"},
+  {date:"108/01/10",text:"人事：李宜庭品質管理員到職",cat:"internal"},
+  {date:"108/01/17",text:"周淑蓮高專應醫策會邀請進行P4P指標稽核",cat:"cert"},
+  {date:"108/01/18",text:"孫宗伯主任應寶建醫院邀請擔任年度品質提升競賽評審",cat:"award"},
+  {date:"108/01/18",text:"舉辦三院區品質管理中心旺年會",cat:"internal"},
+  {date:"108/01/24",text:"舉辦2018品質提升活動期末發表會共17團隊，一側惠廖熏香副執行長、寶建醫院趙正芬副院長、中衛發展中心蕭逢元教授擔任評審",cat:"forum"},
+  {date:"108/01/29",text:"陳志金副主任受邀至高雄榮民總醫院分享「以醫病共享決策SDM輔助嚴重腦損 傷病人的困難決策」",cat:"forum"},
+  {date:"108/01/29",text:"陳志金副主任受邀至慈惠醫院分享病人安全相關主題",cat:"forum"},
+  {date:"108/02/01",text:"人事：許庭瑜品質管理員奉命調任永康院區企劃管理部",cat:"internal"},
+  {date:"108/02/13",text:"陳奇祥部長全院學術演講「以病人流概念進行品質指標管理」",cat:"training"},
+  {date:"108/02/21",text:"陳欽明副主任受邀至花蓮慈濟演講分享「重症醫師參與醫療品質改善之經驗-以奇美醫學中心為例」",cat:"training"},
+  {date:"108/02/22",text:"與醫務管理學會於奇美學中心共同主辦[THIS品管指標系統應用研習營-精鍊品質指標]孫宗伯主任、陳奇祥部長、陳欽明副主任擔任講師",cat:"internal"},
+  {date:"108/03/01",text:"蔡長志醫師應邀至聖馬爾定醫院專題演講醫並共享決策的臨床推動",cat:"training"},
+  {date:"108/03/05",text:"陳欽明副主任受邀至台大雲林分院演講分享「品質改善案做研究發表及投稿國際研討會」",cat:"training"},
+  {date:"108/03/06",text:"衛生福利部醫師司石崇良司長蒞院專題演講「衛福部整合性健康照護網絡」",cat:"training"},
+  {date:"108/03/12",text:"蔡長志醫師SDM全院演講",cat:"training"},
+  {date:"108/03/13",text:"陳奇祥部長、孫宗伯主任擔任醫策會108年台灣臨床成效指標專案小組委員",cat:"internal"},
+  {date:"108/03/15",text:"孫宗伯主任應邀擔任醫策會「品質改善成果撰寫與投稿技巧工作坊」北區第二場講師",cat:"training"},
+  {date:"108/03/19",text:"郭雅薇高專應邀擔任醫策會「P4P 標竿學習研討會」南區場講師分享急性心肌梗塞資訊化收案",cat:"forum"},
+  {date:"108/03/21",text:"張國昌顧問蒞院進行院外品質競賽團隊輔導共7團隊",cat:"award"},
+  {date:"108/03/22",text:"中國醫藥大學體系醫管學系師生一行40餘人蒞院參訪，孫宗伯主任介紹本院品質管理架構",cat:"visit"},
+  {date:"108/03/22",text:"陳欽明副主任代表本院品管中心至醫策會與王拔群執行長座談",cat:"forum"},
+  {date:"108/03/22",text:"孫宗伯主任應邀至麻豆新樓醫院專題演講「持續性品質提升」",cat:"training"},
+  {date:"108/03/23",text:"毛綺如顧問蒞院進行2019年品管輔導員培訓課程",cat:"training"},
+  {date:"108/03/25",text:"周淑蓮高專及洪宜帆品管員代表本院參加醫策會TCPI指標展望會及指標說明會",cat:"internal"},
+  {date:"108/03/27",text:"內分泌科及品管中心至成大醫院參訪糖尿病照護品質認證",cat:"cert"},
+  {date:"108/03/28",text:"本院獲得醫策會頒發「疾病品質認證十年有成—追求卓越獎」接受公開表揚",cat:"cert"},
+  {date:"108/03/28",text:"郭雅薇高專應邀擔任醫策會「P4P 標竿學習研討會」北區場講師分享急性心肌梗塞資訊化收案",cat:"forum"},
+  {date:"108/03/29",text:"孫宗伯主任應邀擔任醫策會「品質改善成果撰寫與投稿技巧工作坊」北區場講師",cat:"training"},
+  {date:"108/04/02",text:"郭雅薇高專應邀擔任醫策會「P4P標竿學習研討會」中區場講師分享急性心肌梗塞資訊化收案",cat:"forum"},
+  {date:"108/04/02",text:"郭雅薇高專應醫策會邀請代表本院赴中國醫藥大學分享P4P AMI指標收集",cat:"forum"},
+  {date:"108/04/08",text:"辦理108年度專科座談共57科、部、中心，分佈於21天",cat:"forum"},
+  {date:"108/04/11",text:"舉辦2019年品質活動說明會共55人參與",cat:"forum"},
+  {date:"108/04/11",text:"陳志金副主任受邀至童綜合醫院分享「以醫病共享決策(SDM)輔助嚴重腦損傷病人的困難決策」",cat:"forum"},
+  {date:"108/04/12",text:"主辦品質改善成果撰寫與投稿技巧工作坊，由孫宗伯主任擔任講師，輔導院內同仁將品質改善成果投稿國際研討會(以BMJ投稿格式為例)",cat:"training"},
+  {date:"108/04/17",text:"主辦品質指標視覺化設計成果發表會，邀請呂宗學教授、林首席副院長、郭行道部長、陳奇祥部長、許建清部長及江惠英副部長擔任評審，共12件主題發表，76人參與。",cat:"forum"},
+  {date:"108/04/22",text:"品質管理中心孫宗伯主任、周淑蓮高專、內科部郭行道部長、外科部張進宏主任、護理部陳綉琴總監、藥劑部蘇慧真部長參加醫策會主辦108年醫院評鑑試評基準說明會。",cat:"internal"},
+  {date:"108/04/23",text:"陳欽明副主任受邀至市立安南醫院分享「重症醫師參與醫療品質改善之經驗-以奇美醫學中心為例」。",cat:"forum"},
+  {date:"108/04/23",text:"馬階醫院團隊蒞院參訪觀摩急診資訊系統app應用",cat:"visit"},
+  {date:"108/04/25",text:"張國昌顧問立院進行品質提升活動進度輔導共15團隊",cat:"training"},
+  {date:"108/05/10",text:"張國昌顧問蒞院指導品質提升活動進階課程：精實HFMEA流程改造",cat:"training"},
+  {date:"108/05/15",text:"翁子傑醫師受邀前往衛生福利部新營醫院演講「從溝通到關懷，翻轉醫療爭議的軸線」。",cat:"training"},
+  {date:"108/05/16",text:"聯新國際醫療集團張煥禎院長等17人至本院參訪觀摩醫院品質管理、發展特色醫療。",cat:"visit"},
+  {date:"108/05/08",text:"中衛發展中心陳建宇顧問蒞院指導品質提升活動初階課程：多元品管工具",cat:"training"},
+  {date:"108/06/17",text:"泰國牙醫師Dr. Kriangkrai Pinchamnankool 於品管中心接受培訓課程",cat:"internal"},
+  {date:"108/06/18",text:"辦理院外品質競賽團隊實地輔導由張國昌顧問、黃文良主任擔任模擬實地訪查委員",cat:"award"},
+  {date:"108/06/18",text:"陳志金副主任受邀至嘉義基督教醫院演講「醫病共享決策(SDM)輔助嚴重腦損 傷病人的困難決策」",cat:"training"},
+  {date:"108/06/19",text:"協助健檢中心接受醫策會醫學美容認證實地訪查",cat:"cert"},
+  {date:"108/06/19",text:"率領團隊參加中衛發展中心南區發表會",cat:"forum"},
+  {date:"108/06/26",text:"張國昌顧問立院進行品質提升活動進度輔導",cat:"training"},
+  {date:"108/06/27",text:"台南市衛生局共同主辦糖尿病績優院觀摩會",cat:"internal"},
+  {date:"108/06/27",text:"林麗華顧問蒞院進行生策中心國家品質獎競賽輔導",cat:"award"},
+  {date:"108/07/02",text:"翁子傑醫師、蔡雅雯醫檢師及何詩君心理師受邀前往嘉南療養院擔任「醫療爭議處理研討會」講師及facilitator",cat:"internal"},
+  {date:"108/07/05",text:"辦理SDM活動說明會",cat:"forum"},
+  {date:"108/07/06",text:"辦理溝通技巧訓練工作坊",cat:"training"},
+  {date:"108/07/11",text:"接受台南市衛生局年度督導考核及緊急醫療醫療能力實地訪查",cat:"cert"},
+  {date:"108/07/12",text:"參加衛福部辦理P4P高階主管研討會",cat:"forum"},
+  {date:"108/07/13",text:"參加醫策會主辦英國MPS(Medical Protection Society)訓練課程",cat:"internal"},
+  {date:"108/07/15",text:"泉州華僑大學醫管相關科系參訪聽取本院品質管理系統簡報",cat:"visit"},
+  {date:"108/07/15",text:"衛生福利部醫事司石崇良司長蒞院進行全院主管根本原因分析RCA培訓課程",cat:"internal"},
+  {date:"108/07/16",text:"翁子傑醫師、蔡雅雯醫檢師及何詩君心理師受邀前往新竹縣政府衛生局擔任「108年度北區醫療網-醫療糾紛關懷調解能力培訓研討會」講師及facilitator",cat:"internal"},
+  {date:"108/07/17",text:"參加醫策會主辦P4P申請醫院交流會",cat:"internal"},
+  {date:"108/07/23",text:"辦理大陸航天中心醫院醫品病安培訓課程",cat:"training"},
+  {date:"108/07/25",text:"孫宗伯主任依[醫療品質與病人安全人才培育進修申請作業細則]赴美國波士頓Institute for Healthcare Improvment 進修IHI Immersion課程",cat:"internal"},
+  {date:"108/07/26",text:"辦理南陽市中心醫院參訪課程",cat:"training"},
+  {date:"108/07/27",text:"石崇良司長蒞院進行RCA團隊進度輔導",cat:"training"},
+  {date:"108/08/01",text:"孫宗伯主任兼任高壓氧科主任",cat:"internal"},
+  {date:"108/08/05",text:"應邀參與醫策會主辦病人安全文化調查應用分享研討會",cat:"forum"},
+  {date:"108/08/07",text:"接受衛福部委託三普會計事務所稽查106年度P4P經費",cat:"internal"},
+  {date:"108/08/07",text:"辦理Tableau醫療照護指標數據視覺化分析輔導活動",cat:"training"},
+  {date:"108/08/08",text:"辦理PGY醫糾關懷基礎課程訓練",cat:"training"},
+  {date:"108/08/13",text:"參與醫策會HQIC智慧醫療發表會共三團隊出賽",cat:"forum"},
+  {date:"108/08/14",text:"舉辦108年度品質提升活動期中發表會共20團隊，由黃文良主任、黃惠美組長、馬淑清副部長擔任評審委員",cat:"forum"},
+  {date:"108/08/20",text:"出席SDM實踐運動座談會",cat:"forum"},
+  {date:"108/08/23",text:"辦理P4P群組醫院檢討會議",cat:"internal"},
+  {date:"108/08/23",text:"邀請彰基孫穆乾主任進行腦中風照護專家輔導訪查",cat:"cert"},
+  {date:"108/08/27",text:"出席TCPI指標討論會",cat:"internal"},
+  {date:"108/08/29",text:"參加病安同好會RCA觀摩賽",cat:"internal"},
+  {date:"108/08/29",text:"接受 HQIC 實地審查(保溫圈、救生圈)",cat:"cert"},
+  {date:"108/08/30",text:"接受 HQIC 實地審查(營養圈、強心圈)",cat:"cert"},
+  {date:"108/09/03",text:"張國昌顧問到院進行品質提升活動輔導",cat:"training"},
+  {date:"108/09/05",text:"出席醫策會稽核員訓練由林宏榮副院長擔任講師",cat:"cert"},
+  {date:"108/09/05",text:"出席醫策會糖尿病SDM座談會",cat:"forum"},
+  {date:"108/09/06",text:"出席醫策會TCPI委員會",cat:"internal"},
+  {date:"108/09/10",text:"中衛實地審查-救生圈",cat:"cert"},
+  {date:"108/09/11",text:"108年團隊非預期急救演練1",cat:"internal"},
+  {date:"108/09/18",text:"出席BMJ/IHI主辦2019international forum of quality and safty on helthcare, 奇美醫院為大會supportive partner",cat:"internal"},
+  {date:"108/09/18",text:"中衛實地審查-保溫圈、營養圈、強心圈",cat:"cert"},
+  {date:"108/09/19",text:"108年團隊非預期急救演練2",cat:"internal"},
+  {date:"108/09/23",text:"辦理P4P群組醫院檢討會議",cat:"internal"},
+  {date:"108/09/23",text:"邀請台灣醫療品質協會吳宛庭副祕書長道院進行PDCA工作坊",cat:"training"},
+  {date:"108/09/24",text:"108年團隊非預期急救演練3",cat:"internal"},
+  {date:"108/09/27",text:"辦理全人照護發表會初賽2",cat:"forum"},
+  {date:"108/09/27",text:"醫事司石崇良司長到院進行RCA輔導課程共115人與會",cat:"training"},
+  {date:"108/10/01",text:"108年團隊非預期急救演練4",cat:"internal"},
+  {date:"108/10/01",text:"辦理全人照護發表會初賽3",cat:"forum"},
+  {date:"108/10/03",text:"林宏榮副院長率領團隊出席108年健康照護聯合學術研討會，本院榮獲醫學中心組研究風氣獎及研究成效優良獎",cat:"forum"},
+  {date:"108/10/05",text:"孫宗伯主任應邀赴馬階醫學中心專題演講主題：釋放內在動機-主管、指標、持續改善",cat:"training"},
+  {date:"108/10/07",text:"本院9位專家委員及2位行政人員進行P4P三階計畫實地輔導共8家合作醫院58人次參與",cat:"cert"},
+  {date:"108/10/08",text:"108年團隊非預期急救演練5",cat:"internal"},
+  {date:"108/10/08",text:"邀請外部講師白凰女士立院輔導Tableau 指標視覺化分析",cat:"training"},
+  {date:"108/10/15",text:"辦理108年病安週活動",cat:"internal"},
+  {date:"108/10/18",text:"醫策會健檢中心品質認證實地訪視",cat:"cert"},
+  {date:"108/10/19",text:"台大公衛學院健康政策管理研究所分享",cat:"forum"},
+  {date:"108/10/23",text:"醫策會HQIC智慧醫療實地審查",cat:"cert"},
+  {date:"108/10/29",text:"張國昌顧問蒞院進行品質提升活動進度輔導",cat:"training"},
+  {date:"108/11/01",text:"醫糾關懷R2基礎訓練課程",cat:"training"},
+  {date:"108/11/20",text:"參加108年度醫病共享決策及成果發表暨頒獎典禮本院獲頒1. 輔助工具競賽1佳作2入選；2.實踐運動2組優秀團隊獎；3.優化活動2組優化貢獻獎",cat:"award"},
+  {date:"108/11/26",text:"舉辦醫糾關懷調解能力進階課程",cat:"training"},
+  {date:"108/11/27",text:"舉辦進階[自我關懷保熱情]講座活動",cat:"internal"},
+  {date:"108/11/29",text:"台灣醫療品質協會品質改善成果發表，本院獲頒2金品1銀品3優品1創新獎 1.強心圈:金品獎、創新獎；2. 藥帶圈:金品獎；3.救生圈:銀品獎；4.保溫圈:優品獎；5.營 養圈:優品獎；6. ICG圈:優品獎",cat:"internal"},
+  {date:"108/12/01",text:"人事：陳月梅病安管理師到職",cat:"internal"},
+  {date:"108/12/03",text:"張國昌顧問蒞院進行品質提升活動進度輔導",cat:"training"},
+  {date:"108/12/03",text:"舉辦病安文化調查單位實例應用與投稿策略說明會",cat:"forum"},
+  {date:"108/12/05",text:"鄭天浚副院長進行腦中風疾病品質認證申報資料指導",cat:"cert"},
+  {date:"108/12/05",text:"應醫策會邀請於TCPI指標討論會分享[推動正向文化、提升醫療品質]",cat:"forum"},
+  {date:"108/12/05",text:"邀請吳文祥教授蒞院指導統計流程管控",cat:"internal"},
+  {date:"108/12/07",text:"孫茂勝策略長進行醫師授權與診療品質座談會",cat:"forum"},
+  {date:"108/12/10",text:"跌倒防治團隊赴彰基跌倒防治中心參訪",cat:"visit"},
+  {date:"108/12/10",text:"參加醫策會主辨醫學中心評鑑說明及交流會議",cat:"cert"},
+  {date:"108/12/11",text:"出席醫策會108年病人安全週優良響應機構頒獎典禮",cat:"award"},
+  {date:"108/12/11",text:"辦理醫糾關懷調解能力培訓進階課程",cat:"training"},
+  {date:"108/12/11",text:"邱仲慶院長率領團隊出席108年國家醫療品質獎頒獎典禮，接受公開表揚榮獲：1. 20週年機構特別獎_積極投入獎；2.20週年機構特別獎_醫品標竿獎；3.主題類主題改善組_藥帶圈金獎、人因特別獎；4. 主題類主題改善組_ICG圈銀獎；5.主題類主題改善菁英組_救生圈銀獎、創意獎；6. 主題類主題改善菁英組_強心圈優選；7. 智慧醫療類智慧解決方案組，門急診服務_急診醫學部及資訊室銀獎、標章；8. 智慧醫療類智慧解決方案組，住院服務_病安暨醫品委員會及心臟血管內科標章；9. 實證醫學類(教學中心業務)2銀獎1潛力獎；10. 擬真情境類(教學中心業務) 1銀獎1優選1潛力獎",cat:"award"},
+  {date:"108/12/12",text:"舉辦P4P群組檢討會議及期末成果發表會",cat:"forum"},
+  {date:"108/12/12",text:"舉辦醫學中心任務指標共識會",cat:"internal"},
+  {date:"108/12/13",text:"出席中衛發展中心總會決賽頒獎典禮，本院榮獲1金塔、3銀塔、1銅塔、及1最佳改善創新獎。1.藥帶圈:金塔獎；2. 救生圈:銀塔獎、最佳改善創新獎；3.強新圈:銀塔獎；4. 保溫圈:銀塔獎；5.營養圈:銅塔獎",cat:"award"},
+  {date:"108/12/13",text:"應邀至北市聯醫分享[醫療品質指標收集、驗證]課程",cat:"training"},
+],
+"107":[
+  {date:"107/01/01",text:"原品質管理中心職稱「辦事員」更改為「品質管理員」",cat:"internal"},
+  {date:"107/01/02",text:"人事：定契人員李宜芸小姐到職",cat:"internal"},
+  {date:"107/01/18",text:"2017年品質提升競賽活動期末發表:張國昌顧問, 醫策會廖熏香副執行長, 寶健醫院趙正芬副院長擔任評委員共19團隊參加",cat:"award"},
+  {date:"107/01/25",text:"吳文祥教授蒞院指導初階SPC工作坊",cat:"training"},
+  {date:"107/01/27",text:"中衛發展中心毛綺如老師蒞院指導品管輔導員培訓初階課程",cat:"training"},
+  {date:"107/02/01",text:"吳文祥教授蒞院指導進階SPC工作坊",cat:"training"},
+  {date:"107/02/09",text:"教學中心、藥劑部、護理部、泌尿科、品質管理中心組隊參加2017醫療品質學院高階課程實證健康照護(EBP)實踐營(三)",cat:"internal"},
+  {date:"107/02/10",text:"中衛發展中心毛綺如老師蒞院指導品管輔導員培訓進階課程",cat:"training"},
+  {date:"107/02/26",text:"加護醫學部陳奇祥部長、品質管理中心孫宗伯主任續任醫策會臨床成效指標TCPI委員",cat:"internal"},
+  {date:"107/03/01",text:"人事：品質管理員蘇文義先生到職",cat:"internal"},
+  {date:"107/03/01",text:"孫宗伯主任、郭雅薇高專、周淑蓮高專代表品質管理中心參加柳營奇美醫院院長交接典禮",cat:"internal"},
+  {date:"107/03/02",text:"品質管理中心承辦全院性演講講座，金獎系列主題「金金金厲害－2017競賽『鑫』路歷程」",cat:"award"},
+  {date:"107/03/21",text:"璀璨五十奇美無比系列活動，舉辦品質管理中心感恩與回顧「品管10 感謝有您 」，醫策會林啓禎董事長及台南衛生局黃文正副局長，蒞臨致詞及頒獎，本院同仁約120人出席慶祝。",cat:"internal"},
+  {date:"107/03/22",text:"舉辦「 醫院品質績效量測指標系統與落實品質改善第三階段計畫」 群組醫院討論會，共17家醫院參與",cat:"internal"},
+  {date:"107/03/25",text:"應邀參加醫策會主辦台灣臨床成效指標(TCPI)年度展望會",cat:"internal"},
+  {date:"107/03/30",text:"陳欽明副主任受邀於台中中山醫學院演講：運用ABCDE bundle提升加護病房呼吸器病人臨床照護成效",cat:"training"},
+  {date:"107/04/09",text:"舉辦107年度專科座談共56場",cat:"forum"},
+  {date:"107/04/12",text:"陳欽明副主任應邀至香港ESICM EuroAsia Conference (Hongkong)發表 Topics: The Performance of multidisciplinary Interventions to improve the outcome of Patients with Mechanical Ventilator in the Intensive Care Unit",cat:"internal"},
+  {date:"107/04/27",text:"陳欽明副主任應邀至韓國首爾(The 37 th KSCCM Annual Congress & Asian Critical Care Conference 2018)發表 Topics: The Comparison of Outcome among Surgical and Medical Patients Experienced Unplanned Extubation",cat:"internal"},
+  {date:"107/05/07",text:"榮獲衛福部頒發醫院品質績效量測指標系統與落實品質改善第三階段計畫106年指標績效獎勵1.最佳團隊獎2.品質改善績優醫學中心獎3.肺炎組合事照護指標獎。奇美群組共8家醫院獲獎",cat:"internal"},
+  {date:"107/05/07",text:"榮獲醫策會邀請於醫院品質績效量測指標系統與落實品質改善第三階段計畫高階主管研討會分享輔導合作醫院經驗",cat:"internal"},
+  {date:"107/05/15",text:"彰化基督教醫院林慶雄醫療長、謝清水主任、張旭東執行長等11名主管至本院參訪討論觀摩「醫院評鑑日常化」",cat:"internal"},
+  {date:"107/05/16",text:"張國昌顧問品質提升活動進度輔導共8團隊",cat:"training"},
+  {date:"107/05/16",text:"舉辦醫病共享決策輔助工具工作坊共96人參加",cat:"training"},
+  {date:"107/05/16",text:"陳欽明副主任應邀去台北萬芳醫院發表重症臨床實務運用 Topics: ABCDE bundle分享",cat:"internal"},
+  {date:"107/05/19",text:"陳欽明副主任應復健醫學會邀請在本院心肺復健實務研討會 Topics: 加護病房心肺功能評估",cat:"forum"},
+  {date:"107/05/22",text:"毛綺如顧問品質提升活動進度輔導共8團隊",cat:"training"},
+  {date:"107/05/23",text:"張國昌顧問品質提升進階工具介紹-預防型品管圈、HFMEA、流程改造、精實醫療",cat:"internal"},
+  {date:"107/05/23",text:"舉辦SDM輔助工具實作工作坊共8團隊參與",cat:"training"},
+  {date:"107/05/24",text:"奇美柳營醫院分享品質指標管理與應用",cat:"forum"},
+  {date:"107/05/24",text:"舉辦P4P三階計畫107年度合作醫院到院輔導，出梯48人次，輔導16家醫院。",cat:"training"},
+  {date:"107/05/25",text:"陳欽明副主任應醫策會邀請至台北，針對台灣臨床成效指標（TCPI）指標改善成果撰寫與投稿技巧發表演講 Topics: 1.為何要將品質改善案做研究發表",cat:"internal"},
+  {date:"107/05/31",text:"林麗華顧問蒞院輔導SNQ團隊，共5團隊參與。",cat:"award"},
+  {date:"107/06/02",text:"衛福部醫事司石崇良司長蒞院指導RCA，共8團隊59人參與。",cat:"internal"},
+  {date:"107/06/02",text:"陳欽明副主任應重症醫學會邀請在高雄榮總發表重症照護：突破創新典範學習研討會 Topics：醫療品質獎 金獎團隊:運用ABCDE bundle提升ICU呼吸器病人照護成效",cat:"internal"},
+  {date:"107/06/03",text:"陳欽明副主任應重症醫學會邀請在台大醫院發表重症照護：突破創新典範學習研討會 Topics：醫療品質獎 金獎團隊:運用ABCDE bundle提升ICU呼吸器病人照護成效",cat:"internal"},
+  {date:"107/06/05",text:"應邀於寶建醫院分享「醫病共享決策」",cat:"forum"},
+  {date:"107/06/11",text:"舉辦P4P合作醫院交流會議",cat:"internal"},
+  {date:"107/06/21",text:"醫策會邀請參加於台北世貿中心2018medicare taiwan 醫療展",cat:"internal"},
+  {date:"107/06/21",text:"李宗學教授蒞院輔導Tableau資料分析工作坊",cat:"training"},
+  {date:"107/06/21",text:"奇美醫院使用ipad輔助醫療作業記者會",cat:"internal"},
+  {date:"107/06/22",text:"參加中衛發展中心品管圈南區發表會，本院四團隊獲獎。",cat:"award"},
+  {date:"107/06/26",text:"107年急救責任醫院訪查院內預評",cat:"cert"},
+  {date:"107/06/27",text:"國泰醫學中心品管中心、資訊部、院長室策略組一行11人蒞臨本院交流參訪",cat:"internal"},
+  {date:"107/07/02",text:"林麗華顧問蒞院進行 SNQ 第二次輔導，共4團隊",cat:"award"},
+  {date:"107/07/04",text:"應中衛發展中心於南區交流會分享1.奇美醫院營造持續品質提升2.106年金獎團隊ABCDE組合照護",cat:"forum"},
+  {date:"107/07/05",text:"接受台南市政府督導考核及急救責任醫院訪查",cat:"cert"},
+  {date:"107/07/16",text:"醫策會HQIC面談-閃電圈",cat:"internal"},
+  {date:"107/07/18",text:"舉辦 SDM (coach) 引導訓練課程",cat:"training"},
+  {date:"107/07/27",text:"應台灣醫療品質協會邀請擔任「醫病共享決策臨床運用研習會 」講師，分享SDM推動臨床經驗",cat:"internal"},
+  {date:"107/07/27",text:"張國昌顧問蒞院進行品質提升活動進度輔導，共八團隊",cat:"training"},
+  {date:"107/07/31",text:"呂宗學教授團隊蒞院進行Tableau資料處理工作坊，共65人參加",cat:"training"},
+  {date:"107/08/04",text:"醫事司石崇良司長蒞院進行品質提升活動進度輔導，共八RCA團隊",cat:"training"},
+  {date:"107/08/06",text:"社區與環境兩團隊參加醫策會HQIC智慧醫療現場發表",cat:"internal"},
+  {date:"107/08/07",text:"輔大醫院張景年副院長率領團隊成員共11名蒞院參訪",cat:"visit"},
+  {date:"107/08/10",text:"醫策會HQIC主題類菁英組實地訪查，鍾國彪、林佐武、杜金錠委員訪查本院Micro圈、保溫圈、急品圈",cat:"cert"},
+  {date:"107/08/15",text:"林宏榮首席醫療副院長率領本院團隊成員共20人赴彰化基督教醫院參訪糖尿病、腦中風、慢性阻塞性肺病照護流程與個案管理系統",cat:"internal"},
+  {date:"107/08/16",text:"中衛發展中心品質競賽實地訪查，蕭逢元、黃麗玲、張展諺委員訪查本院保溫圈、急品圈",cat:"award"},
+  {date:"107/08/17",text:"中衛發展中心品質競賽實地訪查，蕭逢元、陳美玲、黃偉春委員訪查本院管鈦圈、micro圈",cat:"award"},
+  {date:"107/08/18",text:"至台北三軍總醫院參加台灣醫療品質協會年會",cat:"internal"},
+  {date:"107/08/23",text:"舉辦2018年品質提升活動期中發表共23團隊參與，張國昌顧問、毛綺如顧問、馬淑清副部長擔任評審",cat:"internal"},
+  {date:"107/08/29",text:"品質管理中心全體成員設宴歡送陳德人前主任由佳里奇美醫院小兒科榮退",cat:"internal"},
+  {date:"107/09/10",text:"參加於澳洲墨爾本舉辦2018國際健康照護品質及安全論壇海報論文",cat:"forum"},
+  {date:"107/09/05",text:"張國昌顧問指導品質提升活動課程PDCA",cat:"training"},
+  {date:"107/09/07",text:"P4P群組醫院檢討會議共17家醫院參與",cat:"internal"},
+  {date:"107/09/18",text:"辦理住院醫師醫療爭議處理及關懷第一階段課程",cat:"training"},
+  {date:"107/09/23",text:"邱仲慶院長及林宏榮首席醫療副院長率領奇美團隊20人參加於馬來西亞吉隆坡舉辦第35屆2018國際健康照護品質會議(ISQua)，首創台灣醫院獨力申辦專題會議之光榮紀錄",cat:"internal"},
+  {date:"107/10/01",text:"舉辦醫糾關懷培訓第二梯次課程",cat:"training"},
+  {date:"107/10/03",text:"舉辦醫糾關懷培訓第三梯次課程",cat:"training"},
+  {date:"107/10/05",text:"毛綺如顧問蒞院指導2018品質提升活動進度輔導共8團隊",cat:"training"},
+  {date:"107/10/05",text:"舉辦2018特色醫療發表會決審活動共7隊入圍",cat:"forum"},
+  {date:"107/10/06",text:"醫事司石崇良司長蒞院指導根本原因分析第三階段進度輔導共8團隊",cat:"training"},
+  {date:"107/10/09",text:"舉辦醫糾關懷培訓第四梯次課程",cat:"training"},
+  {date:"107/10/11",text:"張國昌顧問蒞院指導2018品質提升活動進度輔導共8團隊",cat:"training"},
+  {date:"107/10/12",text:"醫策會楊麗珠、王乃弘、劉立三位委員蒞院進行HQIC智慧醫療類智慧解決方案組[環境管理]環境監控即時通知為修維護全面管理實地審查",cat:"internal"},
+  {date:"107/10/14",text:"2018年病人安全週活動 [醫病溝通無障礙，樂活奇美響健康]結合重陽節推廣老人就醫安全，提供骨質密度檢測、失智檢測、營養諮詢、癌症篩檢、病安響應活動-說清楚、聽明白、勤發問、作筆記。",cat:"internal"},
+  {date:"107/10/16",text:"人事：邵伊瑾品質管理員到職",cat:"internal"},
+  {date:"107/10/18",text:"泉州國宇醫院代表一行六人至本院參訪觀摩醫療品質管理",cat:"visit"},
+  {date:"107/10/18",text:"接受南區醫療網醫糾關懷實地訪查",cat:"cert"},
+  {date:"107/10/18",text:"陳奇祥部長、周淑蓮高專代表醫策會赴高榮台南分院進行TCPI到院輔導",cat:"internal"},
+  {date:"107/10/20",text:"孫宗伯主任於奇美博物館奇美廳主管共識營報告[發展優質特色醫療]",cat:"internal"},
+  {date:"107/10/26",text:"蔡長志醫師應邀至亞東醫院醫病共享決策研討會專題演講主題[SDM推動經驗分享]",cat:"training"},
+  {date:"107/10/29",text:"生策中心許重義、陳順勝、何善台三位委員蒞院進行SNQ第三階段實地審查，共五組每組90分鐘。 1. 醫事服務組-解剖病理科:淋巴瘤的精準診斷與卓越的研究 2. 醫事服務組-分子病理科:傳承愛，不傳智能障礙-x染色體脆折症篩檢與防治 3. 特色醫療組-心臟科: 腫瘤護心，不再具怕: 乳癌治療患者前瞻性的心臟保健計畫 4. 特色醫療組-加護醫學部: 跨越束縛，迎向希望:使用呼吸器之重症病人早期下床附件，共健保/醫院/病人三贏局面 5. 特色醫療組-耳鼻喉部: 運用全球首創的升學線所分析計數，提升重度聽損兒童對音韻聲調及語言情緒的華文辨識能力",cat:"award"},
+  {date:"107/10/30",text:"孫宗伯主任應邀至嘉義基督教醫院專題演講主題[醫師在醫療品質改善上扮演的角色]",cat:"training"},
+  {date:"107/11/01",text:"邱仲慶院長率領奇美團隊參加2018年台灣健康照護聯合學術研討會，共提出三篇口頭論文，十五篇海報論文，獲頒[研究風氣優良獎]及[研究成效優良獎]，由孫宗伯主任代表受獎。",cat:"forum"},
+  {date:"107/11/03",text:"孫宗伯主任應邀至台大公共衛生學院健康政策與管理研究所在職專班專題演講主題[從品質指標的運用談品質管理]",cat:"internal"},
+  {date:"107/11/16",text:"2018年第31屆中衛全國團結圈競賽榮獲三項銀塔獎[管鈦圈]:以醫病共享決策( SDM ) 輔助嚴重腦損傷病人的困難決策 [保溫圈]:降低早產兒週邊置入中心靜脈導管之非計劃性移除率 [急品圈安老組]: 提升急診高齡病人之照護品質-發展全面性照護模式之流程再造",cat:"award"},
+  {date:"107/11/19",text:"本院參加生策中心「2018年SNQ國家品質標章暨國家生技醫療品質獎」競賽活動，榮獲獎項總計為1銀獎、1銅獎、5標章 銀獎: 醫事服務組-分子病理科:傳承愛，不傳智能障礙-x染色體脆折症篩檢與防治 銅獎: 醫事服務組-解剖病理科:淋巴瘤的精準診斷與卓越的研究 標章: 特色醫療組-心臟科: 腫瘤護心，不再具怕: 乳癌治療患者前瞻性的心臟保健計畫 標章: 特色醫療組-耳鼻喉部: 運用全球首創的升學線所分析計數，提升重度聽損兒童對音韻聲調及語言情緒的華文辨識能力 標章續審: 特色醫療組-加護醫學部: 跨越束縛，迎向希望:使用呼吸器之重症病人早期下床附件，共健保/醫院/病人三贏局面",cat:"award"},
+  {date:"107/11/21",text:"本院參加醫策會主辦「2018年國家醫療品質獎」活動榮獲2金、1銅、1優選、3佳作、1潛力、1創意等多項獎項殊榮 （一）主題改善類：1金獎、2佳作、1創意獎 （二）智慧醫療類：1佳作 （三）實證醫學類：1金獎、1銅獎、1潛力獎 （四）擬真情境類：1優選",cat:"internal"},
+  {date:"107/12/07",text:"舉辦P4P三階計劃群組醫院檢討會議共17家醫院參與",cat:"internal"},
+  {date:"107/12/12",text:"張國昌顧問蒞院進行品質提升活動進度輔導",cat:"training"},
+  {date:"107/12/13",text:"周淑蓮高專赴大安醫院進行指標稽核輔導",cat:"cert"},
+  {date:"107/12/14",text:"參加108年HQIC國家醫療品質獎頒獎典禮接受陳建仁副總統頒獎表揚",cat:"award"},
+  {date:"107/12/20",text:"毛綺如顧問蒞院進行品質提升活動進度輔導",cat:"training"},
+  {date:"107/12/21",text:"大林慈濟醫院簡瑞騰副院長、林名男副院長一行十人到院交流參訪",cat:"visit"},
+  {date:"107/12/21",text:"參加108年SNQ國家生技醫療品質獎頒獎典禮接受陳維昭召集人頒獎表揚",cat:"award"},
+  {date:"107/12/25",text:"進行品質指標內部稽核活動",cat:"cert"},
+  {date:"107/12/27",text:"孫宗伯主任應醫策會邀請擔任指標改善成果撰寫與投稿技巧工作坊北部場講師",cat:"training"},
+  {date:"107/12/27",text:"陳欽明副主任副壢新醫院專題分享持續性品質提升",cat:"forum"},
+  {date:"107/12/28",text:"周淑蓮高專赴陽明醫院進行P4P指標稽核輔導",cat:"cert"},
+  {date:"107/12/28",text:"孫宗伯主任赴台大醫院進行持續品質提升專題演講",cat:"training"},
+],
+};
+
+function buildTimeline() {
+  const tl = document.getElementById('timeline');
+  tl.innerHTML = '';
+  let total = 0;
+
+  const activeYears = currentYear === 'all' ? years : years.filter(y => y === currentYear);
+
+  activeYears.forEach((year, yi) => {
+    const events = allData[year] || [];
+    const filtered = currentCat === 'all' ? events : events.filter(e => e.cat === currentCat);
+    if (!filtered.length) return;
+    total += filtered.length;
+
+    const section = document.createElement('div');
+    section.className = 'year-section';
+    section.innerHTML = `
+      <div class="year-section-header">
+        <div class="year-label">民國 <span>${year}</span> 年</div>
+        <div class="year-section-line"></div>
+        <div class="year-count">${filtered.length} 則</div>
+      </div>`;
+
+    const grouped = {};
+    filtered.forEach(ev => {
+      const m = ev.date.split('/')[1] || '00';
+      if (!grouped[m]) grouped[m] = [];
+      grouped[m].push(ev);
+    });
+
+    Object.keys(grouped).sort((a,b) => b-a).forEach((month, mi) => {
+      const evs = grouped[month];
+      const group = document.createElement('div');
+      group.className = 'month-group';
+      group.style.animationDelay = (yi*0.06 + mi*0.04) + 's';
+      group.innerHTML = `
+        <div class="month-header">
+          <div class="month-badge">${monthNames[month] || month+'月'}</div>
+          <div class="month-line"></div>
+          <div class="month-count">${evs.length} 則</div>
+        </div>`;
+      evs.forEach((ev, ei) => {
+        const p = ev.date.split('/');
+        const card = document.createElement('div');
+        card.className = `event-card cat-${ev.cat}`;
+        card.style.animationDelay = (yi*0.05 + mi*0.03 + ei*0.015) + 's';
+        const hasImg = !!eventImages[ev.text];
+        if (hasImg) card.classList.add('has-modal');
+        if (hasImg) card.addEventListener('click', () => openModal(ev.text, ev.date));
+        card.innerHTML = `
+          <div class="event-date"><div class="event-date-text">${p[1]}/${p[2]}</div></div>
+          <div class="event-body">
+            <div class="event-content">
+              <div class="event-tag">${catLabels[ev.cat]||ev.cat}</div>
+              <div>${ev.text}</div>
+            </div>
+          </div>`;
+        group.appendChild(card);
+      });
+      section.appendChild(group);
+    });
+
+    tl.appendChild(section);
+  });
+
+  if (!total) {
+    tl.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><p>此篩選條件下無相符事件</p></div>`;
+  }
+
+}
+
+function filterCat(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.filter-row:first-child .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildTimeline();
+}
+
+function filterYear(year, btn) {
+  currentYear = year;
+  document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildTimeline();
+}
+
+buildTimeline();
+</script>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <img class="modal-img" id="modalImg" src="" alt="" />
+    <div class="modal-body">
+      <div class="modal-date" id="modalDate"></div>
+      <div class="modal-title" id="modalTitle"></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
